@@ -50,13 +50,15 @@ This is a module used solely for dependency management.
 ## Docker Build
 To build and tag a new docker image, navigate to the root of this repository and run:
 ```console
-docker build . -t empowerco/doctor:<tag_name>
+docker build . --platform <platform> -t empowerco/doctor:<tag_name>
 ```
-where tag name is a unique string tag.
+Where:
+ - `<platform>` is the target platform that the image will run on, usually `linux/x86_64` or `--platform linux/amd64` if running on an M1 Mac.
+ - `<tag_name>` is a unique string tag.
 
 Example:
 ```console
-docker build . -t empowerco/doctor:latest
+docker build . --platform linux/x86_64 -t empowerco/doctor:latest
 ```
 
 To run the built docker image as a container locally, do:
