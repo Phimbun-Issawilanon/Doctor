@@ -46,3 +46,25 @@ passed in the header matches what's stored on the database. Feel free to change 
 
 ### buildSrc
 This is a module used solely for dependency management.
+
+## Docker Build
+To build and tag a new docker image, navigate to the root of this repository and run:
+```console
+docker build . --platform <platform> -t empowerco/doctor:<tag_name>
+```
+Where:
+ - `<platform>` is the target platform that the image will run on, usually `linux/x86_64` or `--platform linux/amd64` if running on an M1 Mac.
+ - `<tag_name>` is a unique string tag.
+
+Example:
+```console
+docker build . --platform linux/x86_64 -t empowerco/doctor:latest
+```
+
+To run the built docker image as a container locally, do:
+```console
+docker run -p 8080:8080 empowerco/doctor:<tag_name>
+```
+
+This command includes a port-forward argument that will forward your machine's 8080 to 8080 on the container.
+Navigate to `http://localhost:8080` to hit the server. (For a quick check, try `http://localhost:8080/health`)

@@ -6,11 +6,17 @@ import io.ktor.server.application.call
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.routing.post
+import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 
 fun Application.executor() {
     routing {
         val viewModel = ExecutorViewModel()
+        get("/health") {
+            call.respond("Hello from KTOR SERVER")
+            return@get
+        }
+
         post("/run") {
             val request = call.receive<RunRequest>()
             val code = request.code
