@@ -12,7 +12,7 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import org.empowrco.doctor.routing.utils.handleAuthenticatedPost
 
-fun Application.playground() {
+fun Application.playgroundRouting() {
     routing {
         val viewModel = DownloadViewModel()
         post("/download") {

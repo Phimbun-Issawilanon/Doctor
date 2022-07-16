@@ -6,3 +6,6 @@ include("fakes")
 include("command:fakes")
 findProject(":command:fakes")?.name = "fakes"
 include("routing-utils")
+include("models")
+include("api")
+include("utils")

@@ -1,8 +1,6 @@
 package org.empowrco.doctor.command
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
 import java.io.InputStream
 import java.util.Scanner
@@ -24,7 +22,7 @@ class RealCommander : Commander {
                 val output = getOutputAsync(process.inputStream)
                 val error = getOutputAsync(process.errorStream)
                 process.waitFor(30, TimeUnit.SECONDS)
-                if (output.isNotBlank()) {
+                if (error.isBlank()) {
                     CommandResponse.Success(output)
                 } else {
                     CommandResponse.Error(error)
