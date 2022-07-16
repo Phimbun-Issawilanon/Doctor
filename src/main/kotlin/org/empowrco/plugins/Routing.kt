@@ -1,10 +1,10 @@
 package org.empowrco.plugins
 
 import io.ktor.server.application.Application
-import org.empowrco.doctor.executor.routing.executor
-import org.empowrco.doctor.playground.routing.playground
+import org.empowrco.doctor.api.assignment.assignmentRouting
+import org.empowrco.doctor.playground.routing.playgroundRouting
 
 fun Application.configureRouting() {
-    playground()
-    executor()
+    playgroundRouting()
+    assignmentRouting()
 }
