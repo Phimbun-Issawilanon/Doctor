@@ -1,15 +1,8 @@
 # Doctor
-Using the Doctor to keep Apple away.
+This project was originally meant as a way to allow code written in Swift to be executed safely on a remote server. The project has since taken on a new life to allow all modern languages to be executed on a server in a safe manner. Thus, removing the need for people to have an expensive computer to compile code.
+
+**Disclaimer**: This project is only meant to be a _base_. It does not contain all the necessary security features to combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production.
 ___
-## Purpose
-Empowr's program teaches iOS development to high school students of color.
-Since the average iOS developer earns six figures, we end the poverty cycles that plague our community.
-Unfortunately, MacBooks are required for iOS development and MacBooks are also very expensive.
-Creating a server that will allow arbitrary swift code execution will allow our students to complete Playground style code exercies,
-without a MacBook computer.
-
-The end goal of this server is to completely remove the MacBook requirement for our students.
-
 ## Technology
 We use Ktor as it's a fast and easy to learn framework for server creation. This project is meant to run inside
 a Docker instance to prevent any malicious code from hurting your server instance.
@@ -30,13 +23,23 @@ The purpose of this module is for executing code.
 The executor interface is meant to be generic enough that any language could have it's own implementation.
 We currently support a Swift implementation and look to support Kotlin and Python in the future.
 
-#### SwiftExecutor
-To execute Swift code just use the `SwiftExecutor`. Pass in the code to the execute method and it will create a `.swift`
-file, capture the output, and return it
+Here is a list of the executors and the language(s) they support.
+
+| Files           | Languages     |
+|-----------------|---------------|
+| SwiftExecutor   | Apple's Swift |
+| Kotlin Executor | Kotlin        |
+| PythonExecutor  | Python        |
+
 
 ### Playground
 Students may want to download a the code they wrote in an easily executable way.
-We currently only have plans to support Swift for this module, but may extend functionality in the future.
+
+A list of supported downloadable executables.
+
+- Swift
+
+😬. Help us by adding more languages.
 
 This module contains an api `/download` that if hit, will package up the code sent to it, and return a fully working swift playground.
 
@@ -48,6 +51,9 @@ passed in the header matches what's stored on the database. Feel free to change 
 This is a module used solely for dependency management.
 
 ## Docker Build
+
+**Note** - Uncomment the line `ARG DEBIAN_FRONTEND=noninteractive` in the Dockerfile if the build hangs
+
 To build and tag a new docker image, navigate to the root of this repository and run:
 ```console
 docker build . --platform <platform> -t empowerco/doctor:<tag_name>
