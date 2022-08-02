@@ -16,8 +16,7 @@ RUN apt-get install -y openjdk-11-jdk
 RUN apt-get install -y wget binutils git gnupg2 libc6-dev libcurl4 libedit2 libgcc-9-dev libpython2.7 libsqlite3-0 libstdc++-9-dev libxml2 libz3-dev pkg-config tzdata zlib1g-dev
 RUN wget https://download.swift.org/swift-5.6.2-release/ubuntu2004/swift-5.6.2-RELEASE/swift-5.6.2-RELEASE-ubuntu20.04.tar.gz
 RUN tar -xzf swift-5.6.2-RELEASE-ubuntu20.04.tar.gz
-RUN cp swift-5.6.2-RELEASE-ubuntu20.04/usr/bin/swift /usr/bin/
-
+ENV PATH="swift-5.6.2-RELEASE-ubuntu20.04/usr/bin:${PATH}"
 
 
 
@@ -25,6 +24,17 @@ RUN python --version
 RUN java --version
 RUN swift --version
 
+# Running the Ktor application
+FROM gradle:7-jdk11 AS build
+COPY  . /src
+WORKDIR /src
+RUN gradle shadowJar --no-daemon
+
+FROM openjdk:11
+EXPOSE 8080:8080
+RUN mkdir /app
+COPY --from=build /src/build/libs/Doctor*.jar /app/doctor.jar
+ENTRYPOINT ["java","-jar","/app/doctor.jar"]
 
 # COPY . .
 # RUN ./gradlew assembleDist
