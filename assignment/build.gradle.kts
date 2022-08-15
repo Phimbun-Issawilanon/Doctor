@@ -11,4 +11,5 @@ dependencies {
     implementation(Deps.Koin.main)
     implementation(project(Deps.Project.models))
     implementation(project(Deps.Project.executor))
+    implementation(project(Deps.Sources.main))
 }

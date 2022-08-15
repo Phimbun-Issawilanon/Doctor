@@ -24,7 +24,7 @@ internal class SwiftExecutor(private val commander: Commander) : Executor() {
                 tempFile.deleteRecursively()
                 Success(result.output)
             } catch (ex: Exception) {
-                Error(ex.message)
+                Error(ex.message ?: "")
             }
         }
     }

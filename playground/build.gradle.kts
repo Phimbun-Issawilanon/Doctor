@@ -21,4 +21,5 @@ dependencies {
     implementation(Deps.Ktor.contentNegotiation)
     testImplementation(Deps.Kotest.junit)
     testImplementation(Deps.Kotest.assertions)
+    implementation(project(Deps.Utils.routing))
 }

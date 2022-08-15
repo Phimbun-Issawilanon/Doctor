@@ -3,15 +3,40 @@ object Deps {
     object Project {
         val models by lazy { ":models" }
         val playground by lazy { ":playground" }
-        val routingUtils by lazy { ":routing-utils" }
         val executor by lazy { ":executor" }
-        val api by lazy { ":api" }
+        val assignment by lazy { ":assignment" }
 
         object Command {
             val main by lazy { ":command" }
             val fakes by lazy { ":command:fakes" }
         }
+    }
 
+    object Utils {
+        val routing by lazy {":utils:routing"}
+    }
+
+    object Exposed {
+        val core by lazy { "org.jetbrains.exposed:exposed-core:${Versions.exposed}" }
+        val jdbc by lazy { "org.jetbrains.exposed:exposed-jdbc:${Versions.exposed}" }
+        val dateTime by lazy { "org.jetbrains.exposed:exposed-kotlin-datetime:${Versions.exposed}" }
+        val javaDateTime by lazy { "org.jetbrains.exposed:exposed-java-time:${Versions.exposed}" }
+    }
+
+    object Hikari {
+        val main by lazy { "com.zaxxer:HikariCP:5.0.1" }
+    }
+
+    object Postgresql {
+        val main by lazy { "org.postgresql:postgresql:42.3.1" }
+    }
+
+    object Models {
+        val main by lazy { ":models" }
+    }
+
+    object Db {
+        val main by lazy { ":db" }
     }
 
     object Koin {
@@ -26,6 +51,7 @@ object Deps {
 
     object Kotlin {
         val coroutines by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2" }
+        val dateTime by lazy { "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0" }
     }
 
     object Ktor {
@@ -38,6 +64,10 @@ object Deps {
         val gson by lazy { "io.ktor:ktor-client-gson:${Versions.ktor}" }
         val netty by lazy { "io.ktor:ktor-server-netty-jvm:${Versions.ktor}" }
         val statusPages by lazy { "io.ktor:ktor-server-status-pages:${Versions.ktor}" }
+    }
+
+    object Sources {
+        val main by lazy { ":sources" }
     }
 
     object Logback {

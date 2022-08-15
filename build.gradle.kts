@@ -42,15 +42,17 @@ allprojects {
 dependencies {
 
     implementation(project(Deps.Project.playground))
-    implementation(project(Deps.Project.api))
+    implementation(project(Deps.Project.assignment))
     implementation(project(Deps.Project.executor))
     implementation(project(Deps.Project.Command.main))
     implementation(project(Deps.Project.models))
+    implementation(project(Deps.Db.main))
     implementation(Deps.Koin.main)
     implementation(Deps.Ktor.core)
     implementation(Deps.Ktor.auth)
     implementation(Deps.Ktor.headers)
     implementation(Deps.Ktor.redirect)
+    implementation(Deps.Exposed.dateTime)
     implementation(Deps.Ktor.statusPages)
     implementation(Deps.Ktor.contentNegotiation)
     implementation(Deps.Ktor.json)
