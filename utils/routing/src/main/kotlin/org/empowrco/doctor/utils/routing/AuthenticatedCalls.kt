@@ -1,4 +1,4 @@
-package org.empowrco.doctor.routing.utils
+package org.empowrco.doctor.utils.routing
 
 import io.ktor.http.Parameters
 import io.ktor.server.application.ApplicationCall
@@ -12,6 +12,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
+import org.empowrco.doctor.utils.UnauthorizedException
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -33,16 +34,15 @@ suspend fun PipelineContext<Unit, ApplicationCall>.handleAuthentication() {
     call.request.authorization()?.let {
         val possibleToken = it.removePrefix("Bearer").trim()
         if (possibleToken.isBlank()) {
-            null
+            throw UnauthorizedException
         } else {
             possibleToken
         }
     }?.let {
         if (it != System.getenv("SECRET")) {
-            handleCallResponseException(call, Exception("Unauthorized call"))
-            return
+            throw UnauthorizedException
         }
-    }
+    } ?: throw throw UnauthorizedException
 }
 
 suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handleAuthenticatedGet(block: (body: Parameters) -> T) {

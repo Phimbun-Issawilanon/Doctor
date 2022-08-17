@@ -9,7 +9,7 @@ repositories {
 
 dependencies {
     implementation(project(Deps.Project.Command.main))
-    implementation(project(Deps.Project.models))
+    implementation(project(Deps.Models.main))
     testImplementation(project(Deps.Project.Command.fakes))
     implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Koin.main)

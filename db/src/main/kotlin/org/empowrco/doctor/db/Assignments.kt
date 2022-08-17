@@ -1,7 +1,7 @@
 package org.empowrco.doctor.db
 
 object Assignments : BaseTable() {
-    val referenceId = text("assignment_id").uniqueIndex()
+    val referenceId = text("reference_id").uniqueIndex()
     val expectedOutput = text("expected_output")
     val instructions = text("instructions")
     val totalAttempts = integer("total_attempts")

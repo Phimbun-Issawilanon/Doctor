@@ -10,7 +10,7 @@ import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
-import org.empowrco.doctor.routing.utils.handleAuthenticatedPost
+import org.empowrco.doctor.utils.routing.handleAuthenticatedPost
 
 fun Application.playgroundRouting() {
     routing {

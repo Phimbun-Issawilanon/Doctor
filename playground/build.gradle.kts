@@ -14,7 +14,6 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":routing-utils"))
     implementation(Deps.Ktor.core)
     implementation(Deps.Ktor.json)
     implementation(Deps.Archiver.main)

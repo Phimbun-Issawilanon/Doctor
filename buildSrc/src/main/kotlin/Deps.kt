@@ -1,7 +1,6 @@
 object Deps {
 
     object Project {
-        val models by lazy { ":models" }
         val playground by lazy { ":playground" }
         val executor by lazy { ":executor" }
         val assignment by lazy { ":assignment" }
@@ -12,8 +11,16 @@ object Deps {
         }
     }
 
+    object Assignment {
+        val api by lazy { ":assignment:api" }
+        val presenters by lazy { ":assignment:presenters" }
+        val backend by lazy { ":assignment:backend" }
+        val main by lazy { ":assignment" }
+    }
+
     object Utils {
-        val routing by lazy {":utils:routing"}
+        val routing by lazy { ":utils:routing" }
+        val main by lazy { ":utils" }
     }
 
     object Exposed {
