@@ -1,18 +1,40 @@
 # Doctor
-This project was originally meant as a way to allow code written in Swift to be executed safely on a remote server. The project has since taken on a new life to allow all modern languages to be executed on a server in a safe manner. Thus, removing the need for people to have an expensive computer to compile code.
 
-**Disclaimer**: This project is only meant to be a _base_. It does not contain all the necessary security features to combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production.
+This project was originally meant as a way to allow code written in Swift to be executed safely on a remote server. The
+project has since taken on a new life to allow all modern languages to be executed on a server in a safe manner. Thus,
+removing the need for people to have an expensive computer to compile code.
+
+**Disclaimer**: This project is only meant to be a _base_. It does not contain all the necessary security features to
+combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production.
 ___
+
 ## Technology
-We use Ktor as it's a fast and easy to learn framework for server creation. This project is meant to run inside
+
+We use Ktor as it's a fast and easy to learn framework for server creation. Exposed is used to make working with the
+database easier and offer a layer of protection. This project is meant to run inside
 a Docker instance to prevent any malicious code from hurting your server instance.
+___
+
+## How you can support
+
+The number one way to support this project is by donating to [Empowr](https://empowrco.org). If you are technically
+inclined
+and would like to submit code, then feel free to contribute to any area on the following list.
+
+- Security. While this serves only serves as a base, we would like to ensure it is as secure as possible.
+- More Languages. We would love to support more languages on the server side.
+- Bugs & Features. We are open to adding new features. So if you have a cool idea, create it!
+
+___
 
 ## How it works by the module
 
 ### Command
+
 The command module is responsible for running commands locally on the server hardware
 
 #### Commander
+
 This file is used for executing commands locally. You simply pass in the command
 to your `Commander`'s `execute()` method
 
@@ -20,7 +42,8 @@ to your `Commander`'s `execute()` method
 The purpose of this module is for executing code.
 
 #### Executor
-The executor interface is meant to be generic enough that any language could have it's own implementation.
+
+The executor interface is meant to be generic enough that any language could have its own implementation.
 We currently support a Swift implementation and look to support Kotlin and Python in the future.
 
 Here is a list of the executors and the language(s) they support.
@@ -33,13 +56,12 @@ Here is a list of the executors and the language(s) they support.
 
 
 ### Playground
-Students may want to download a the code they wrote in an easily executable way.
+
+Students may want to download the code they wrote in an easily executable way.
 
 A list of supported downloadable executables.
 
 - Swift
-
-😬. Help us by adding more languages.
 
 This module contains an api `/download` that if hit, will package up the code sent to it, and return a fully working swift playground.
 
