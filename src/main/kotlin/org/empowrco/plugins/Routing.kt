@@ -5,7 +5,7 @@ import io.ktor.server.application.call
 import io.ktor.server.response.respond
 import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
-import org.empowrco.doctor.api.assignment.assignmentRouting
+import org.empowrco.doctor.assignment.api.assignmentRouting
 import org.empowrco.doctor.playground.routing.playgroundRouting
 
 fun Application.configureRouting() {

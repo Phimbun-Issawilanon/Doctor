@@ -14,11 +14,11 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
-    implementation(project(":routing-utils"))
     implementation(Deps.Ktor.core)
     implementation(Deps.Ktor.json)
     implementation(Deps.Archiver.main)
     implementation(Deps.Ktor.contentNegotiation)
     testImplementation(Deps.Kotest.junit)
     testImplementation(Deps.Kotest.assertions)
+    implementation(project(Deps.Utils.routing))
 }

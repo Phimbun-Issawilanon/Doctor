@@ -27,12 +27,14 @@ internal class KotlinExecutor(private val commander: Commander) : Executor() {
                     }
                 }
                 val jarName = "${tempFile.nameWithoutExtension}.jar"
-                commander.execute("kotlinc ${tempFile.absolutePath} -include-runtime -d $jarName")
+                val command = "kotlinc ${tempFile.absolutePath} -include-runtime -d $jarName"
+                val commandResponse = commander.execute(command)
+                println(commandResponse)
                 val executeResult = commander.execute("java -jar $jarName")
                 tempFile.deleteRecursively()
                 Success(executeResult.output)
             } catch (ex: Exception) {
-                Error(ex.message)
+                Error(ex.message ?: "")
             }
         }
     }

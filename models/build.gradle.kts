@@ -1,19 +1,8 @@
 plugins {
-    id("java")
-}
-
-group = "org.empowrco.doctor.models"
-version = "1.0.0"
-
-repositories {
-    mavenCentral()
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 dependencies {
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
-}
-
-tasks.getByName<Test>("test") {
-    useJUnitPlatform()
+    implementation(Deps.Ktor.json)
+    implementation(Deps.Kotlin.dateTime)
 }

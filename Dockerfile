@@ -20,6 +20,17 @@ ENV PATH="swift-5.6.2-RELEASE-ubuntu20.04/usr/bin:${PATH}"
 
 
 
+# Install Kotlin
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+RUN apt-get -qq -y install curl unzip zip
+
+RUN curl -s "https://get.sdkman.io" | bash
+RUN source "$HOME/.sdkman/bin/sdkman-init.sh"
+RUN sdk install kotlin
+
+
+# Testing
+RUN kotlin --version
 RUN python --version
 RUN java --version
 RUN swift --version
