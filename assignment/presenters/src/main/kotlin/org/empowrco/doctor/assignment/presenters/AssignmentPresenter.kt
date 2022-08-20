@@ -21,8 +21,7 @@ interface AssignmentPresenter {
 
 internal class RealAssignmentPresenter(private val repo: AssignmentRepository) : AssignmentPresenter {
     override suspend fun run(request: RunRequest): RunResponse {
-        val result = repo.executeCode(request.language, request.code)
-        when (result) {
+        when (val result = repo.executeCode(request.language, request.code)) {
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
             is Error -> throw result
             is Success -> return RunResponse(result.output)
@@ -36,8 +35,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
             return SubmitResponse(assignment.failureMessage, "", false)
         }
 
-        val codeResult = repo.executeCode(request.language, request.code)
-        return when (codeResult) {
+        return when (val codeResult = repo.executeCode(request.language, request.code)) {
             is NoValidExecutor -> throw UnsupportedLanguage(codeResult.message)
             is Error -> {
                 val error = codeResult.message
