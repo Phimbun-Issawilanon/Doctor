@@ -116,7 +116,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
             createdAt = currentTime,
             lastModifiedAt = currentTime,
         )
-        val createdAssignment = repo.createAssignment(assignment) ?: throw UnknownException
-        return CreateAssignmentResponse(createdAssignment.id.toString())
+        repo.createAssignment(assignment) ?: throw UnknownException
+        return CreateAssignmentResponse
     }
 }

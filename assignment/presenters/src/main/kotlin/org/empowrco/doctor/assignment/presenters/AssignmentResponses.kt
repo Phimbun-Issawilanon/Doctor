@@ -13,4 +13,4 @@ data class SubmitResponse(
 )
 
 @Serializable
-data class CreateAssignmentResponse(val uuid: String)
+object CreateAssignmentResponse
