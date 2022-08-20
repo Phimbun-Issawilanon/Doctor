@@ -1,10 +1,13 @@
 package org.empowrco.doctor.utils.routing
 
+import io.ktor.http.ContentDisposition
+import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
 import io.ktor.server.request.header
+import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondFile
 import io.ktor.server.routing.Route
@@ -130,6 +133,12 @@ suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.resp
     response: T
 ) {
     if (response is File) {
+        call.response.header(
+            HttpHeaders.ContentDisposition,
+            ContentDisposition.Attachment.withParameter(ContentDisposition.Parameters.FileName, response.name)
+                .toString()
+        )
+
         call.respondFile(response)
     } else {
         call.respond(response)
