@@ -1,91 +1,137 @@
 package org.empowrco.doctor.utils.routing
 
-import io.ktor.http.Parameters
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
-import io.ktor.server.request.authorization
-import io.ktor.server.request.receiveOrNull
+import io.ktor.server.request.header
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondFile
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.put
+import io.ktor.server.routing.routing
+import io.ktor.util.KtorDsl
 import io.ktor.util.pipeline.PipelineContext
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.JsonPrimitive
-import kotlinx.serialization.json.jsonObject
 import org.empowrco.doctor.utils.UnauthorizedException
-import org.slf4j.LoggerFactory
 import java.io.File
 
-suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handleAuthenticatedPost(block: (body: JsonObject) -> T) {
-    handleAuthentication()
-    val requestBodyString = call.receiveOrNull<String>() ?: run {
-        handleCallResponseException(call, Exception("No body in the request"))
-        return
-    }
-    try {
-        val requestBody = Json.parseToJsonElement(requestBodyString).jsonObject
-        handleRequestBody(requestBody, block)
-    } catch (ex: Exception) {
-        handleCallResponseException(call, ex)
-    }
+@KtorDsl
+@JvmName("postTyped")
+inline fun <reified T : Any> Route.authPost(
+    crossinline body: suspend (call: ApplicationCall) -> T,
+): Route = post {
+    handlePost(body)
 }
 
-suspend fun PipelineContext<Unit, ApplicationCall>.handleAuthentication() {
-    call.request.authorization()?.let {
-        val possibleToken = it.removePrefix("Bearer").trim()
-        if (possibleToken.isBlank()) {
-            throw UnauthorizedException
-        } else {
-            possibleToken
-        }
-    }?.let {
-        if (it != System.getenv("SECRET")) {
-            throw UnauthorizedException
-        }
-    } ?: throw throw UnauthorizedException
+@KtorDsl
+@JvmName("postTypedPath")
+inline fun <reified T : Any> Route.authPost(
+    path: String,
+    crossinline body: suspend (call: ApplicationCall) -> T,
+): Route = post(path) {
+    handlePost(body)
 }
 
-suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handleAuthenticatedGet(block: (body: Parameters) -> T) {
-    handleAuthentication()
-    val params = call.request.queryParameters
-    try {
-        handleRequestParams(params, block)
-    } catch (ex: Exception) {
-        handleCallResponseException(call, ex)
-    }
-}
-
-suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handleRequestParams(
-    params: Parameters,
-    block: (body: Parameters) -> T,
+suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handlePost(
+    body: suspend (call: ApplicationCall) -> T,
 ) {
-    val response = block(params)
-    call.respond(response)
+    authenticate(call)
+    val response = body(call)
+    respond(response)
 }
 
-suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handleRequestBody(
-    requestBody: JsonObject,
-    block: (body: JsonObject) -> T
+fun authenticate(call: ApplicationCall) {
+    val bearer = call.request.header("Authorization") ?: throw UnauthorizedException
+    val idToken = bearer.substringAfter("Bearer").trim()
+    if (idToken != System.getenv("secret")) {
+        throw UnauthorizedException
+    }
+}
+
+@KtorDsl
+@JvmName("putTyped")
+inline fun <reified T : Any> Route.authPut(
+    crossinline body: suspend (call: ApplicationCall) -> T,
+): Route = put {
+    handlePut(body)
+}
+
+@KtorDsl
+@JvmName("putTypedPath")
+inline fun <reified T : Any> Route.authPut(
+    path: String,
+    crossinline body: suspend (call: ApplicationCall) -> T,
+): Route = put(path) {
+    handlePut(body)
+}
+
+suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.handlePut(
+    body: suspend (call: ApplicationCall) -> T,
 ) {
-    val response = block(requestBody)
+    authenticate(call)
+    val response = body(call)
+    respond(response)
+}
+
+@KtorDsl
+inline fun Route.authDelete(
+    crossinline body: suspend (call: ApplicationCall) -> Unit,
+): Route {
+    return delete {
+        authenticate(call)
+        body(call)
+        respond(HttpStatusCode.OK)
+    }
+}
+
+/**
+ * Builds a route to match `DELETE` requests.
+ * @see [Application.routing]
+ */
+@KtorDsl
+inline fun Route.authDelete(
+    path: String,
+    crossinline body: suspend (call: ApplicationCall) -> Unit,
+): Route {
+    return delete(path) {
+        authenticate(call)
+        body(call)
+        respond(HttpStatusCode.OK)
+    }
+}
+
+@KtorDsl
+inline fun <reified T : Any> Route.authGet(
+    crossinline body: suspend (call: ApplicationCall) -> T,
+): Route {
+    return get {
+        authenticate(call)
+        val response = body(call)
+        respond(response)
+    }
+}
+
+@KtorDsl
+inline fun <reified T : Any> Route.authGet(
+    path: String,
+    crossinline body: suspend (call: ApplicationCall) -> T,
+): Route {
+    return get(path) {
+        authenticate(call)
+        val response = body(call)
+        respond(response)
+    }
+}
+
+suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.respond(
+    response: T
+) {
     if (response is File) {
         call.respondFile(response)
     } else {
         call.respond(response)
     }
-}
-
-suspend fun handleCallResponseException(
-    call: ApplicationCall,
-    error: Exception,
-) {
-    call.respond(
-        JsonObject(
-            mapOf(
-                "error" to JsonPrimitive(error.localizedMessage)
-            )
-        )
-    )
-    val logger = LoggerFactory.getLogger("Routing")
-    logger.error(error.toString())
 }

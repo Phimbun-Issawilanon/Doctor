@@ -10,4 +10,5 @@ dependencies {
     implementation(Deps.Ktor.contentNegotiation)
     implementation(Deps.Kotlin.coroutines)
     implementation(project(Deps.Models.main))
+    implementation(project(Deps.Utils.routing))
 }
