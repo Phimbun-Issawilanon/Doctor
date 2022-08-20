@@ -47,12 +47,3 @@ RUN mkdir /app
 COPY --from=build /src/build/libs/Doctor*.jar /app/doctor.jar
 ENTRYPOINT ["java","-jar","/app/doctor.jar"]
 
-# COPY . .
-# RUN ./gradlew assembleDist
-# # Stage the Doctor distro
-# COPY /build/distributions/*.tar .
-# RUN tar -xf ./Doctor*.tar && rm -rf ./Doctor*.tar
-
-# # Expose port 8080 and run the Doctor server
-# EXPOSE 8080
-# CMD ./Doctor*/bin/Doctor
