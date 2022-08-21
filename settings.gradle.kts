@@ -2,7 +2,6 @@ rootProject.name = "Doctor"
 include("download")
 include("command")
 include("executor")
-include("fakes")
 include("command:fakes")
 findProject(":command:fakes")?.name = "fakes"
 include("models")
