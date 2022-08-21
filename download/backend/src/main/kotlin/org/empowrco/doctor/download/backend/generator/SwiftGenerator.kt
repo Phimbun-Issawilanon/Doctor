@@ -1,4 +1,4 @@
-package org.empowrco.doctor.playground.generator
+package org.empowrco.doctor.download.backend.generator
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -9,18 +9,16 @@ import java.nio.file.Path
 import kotlin.io.path.Path
 import kotlin.io.path.absolutePathString
 
-
-internal interface Playground {
-    suspend fun generate(code: String): Path
-}
-
-class RealPlayground: Playground {
+internal class SwiftGenerator : Generator() {
     companion object {
         private const val archiveName = "MyPlayground"
     }
+
+    override val handlesLanguages = setOf("swift", "text/x-swift")
+
     override suspend fun generate(code: String): Path = withContext(Dispatchers.IO) {
         val tempFolder = Files.createTempDirectory("playground")
-        val folderAbsolutePath = "${tempFolder.absolutePathString()}/${archiveName}.playground"
+        val folderAbsolutePath = "${tempFolder.absolutePathString()}/$archiveName.playground"
         val folderPath = Path(folderAbsolutePath)
         val folder = Files.createDirectory(folderPath)
         createFile(
@@ -40,6 +38,15 @@ class RealPlayground: Playground {
         return@withContext compressedPath
     }
 
+    private fun generateDefaultXml(): String {
+        val builder = StringBuilder()
+        builder.appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
+        builder.appendLine("<playground version='5.0' target-platform='ios' buildActiveScheme='true' importAppTypes='true'>")
+        builder.appendLine("    <timeline fileName='timeline.xctimeline'/>")
+        builder.appendLine("</playground>")
+        return builder.toString()
+    }
+
     private fun generateWorkspace(folder: Path) {
         val contentsAbsolutePath = "${folder.absolutePathString()}/playground.xcworkspace"
         val contentsPath = Path(contentsAbsolutePath)
@@ -57,15 +64,6 @@ class RealPlayground: Playground {
         builder.appendLine("      location = \"self:\">")
         builder.appendLine("   </FileRef>")
         builder.appendLine("</Workspace>")
-        return builder.toString()
-    }
-
-    private fun generateDefaultXml(): String {
-        val builder = StringBuilder()
-        builder.appendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>")
-        builder.appendLine("<playground version='5.0' target-platform='ios' buildActiveScheme='true' importAppTypes='true'>")
-        builder.appendLine("    <timeline fileName='timeline.xctimeline'/>")
-        builder.appendLine("</playground>")
         return builder.toString()
     }
 

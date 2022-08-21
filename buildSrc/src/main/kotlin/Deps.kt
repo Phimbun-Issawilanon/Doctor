@@ -1,7 +1,6 @@
 object Deps {
 
     object Project {
-        val playground by lazy { ":playground" }
         val executor by lazy { ":executor" }
         val assignment by lazy { ":assignment" }
 
@@ -9,6 +8,13 @@ object Deps {
             val main by lazy { ":command" }
             val fakes by lazy { ":command:fakes" }
         }
+    }
+
+    object Download {
+        val main by lazy { ":download" }
+        val presenters by lazy { ":download:presenters" }
+        val backend by lazy { ":download:backend" }
+        val api by lazy { ":download:api" }
     }
 
     object Assignment {

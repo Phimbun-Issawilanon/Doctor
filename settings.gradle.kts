@@ -1,5 +1,5 @@
 rootProject.name = "Doctor"
-include("playground")
+include("download")
 include("command")
 include("executor")
 include("fakes")
@@ -20,3 +20,9 @@ findProject(":assignment:backend")?.name = "backend"
 include("assignment:api")
 findProject(":assignment:api")?.name = "api"
 include("utils")
+include("download:api")
+findProject(":download:api")?.name = "api"
+include("download:backend")
+findProject(":download:backend")?.name = "backend"
+include("download:presenters")
+findProject(":download:presenters")?.name = "presenters"

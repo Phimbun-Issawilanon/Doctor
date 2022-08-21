@@ -8,7 +8,7 @@ RUN apt-get update -y && apt-get upgrade -y && apt-get install -y python3.10
 RUN ln -s /usr/bin/python3.10 /usr/bin/python
 
 # Install Java 11
-#ARG DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y openjdk-11-jdk
 
 
