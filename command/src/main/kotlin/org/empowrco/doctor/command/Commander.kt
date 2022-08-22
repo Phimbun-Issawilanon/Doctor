@@ -19,8 +19,8 @@ class RealCommander : Commander {
         withContext(Dispatchers.IO) {
             result = try {
                 val process = Runtime.getRuntime().exec(command)
-                val output = getOutputAsync(process.inputStream)
-                val error = getOutputAsync(process.errorStream)
+                val output = getOutput(process.inputStream)
+                val error = getOutput(process.errorStream)
                 process.waitFor(30, TimeUnit.SECONDS)
                 if (error.isBlank()) {
                     CommandResponse.Success(output)
@@ -35,7 +35,7 @@ class RealCommander : Commander {
         return result
     }
 
-    private fun getOutputAsync(inputStream: InputStream): String {
+    private fun getOutput(inputStream: InputStream): String {
         var result = ""
         val scanner = Scanner(inputStream, loggingCharset)
         scanner.use {
