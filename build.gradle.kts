@@ -28,7 +28,7 @@ allprojects {
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
     }
 
-    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class.java).all {
+    tasks.withType(KotlinCompile::class.java).all {
         kotlinOptions.freeCompilerArgs = listOf(
             "-Xuse-experimental=io.ktor.locations.KtorExperimentalLocationsAPI",
             "-opt-in=kotlin.RequiresOptIn"
@@ -37,6 +37,10 @@ allprojects {
 
     dependencies {
         implementation(kotlin("stdlib"))
+        testImplementation(kotlin("test"))
+    }
+    tasks.test {
+        useJUnitPlatform()
     }
 }
 
@@ -52,18 +56,15 @@ dependencies {
     implementation(project(Deps.Utils.routing))
     implementation(Deps.Koin.main)
     implementation(Deps.Ktor.core)
-    implementation(Deps.Ktor.auth)
     implementation(Deps.Ktor.headers)
     implementation(Deps.Ktor.redirect)
-    implementation(Deps.Exposed.dateTime)
+    implementation(Deps.Exposed.core)
     implementation(Deps.Ktor.statusPages)
     implementation(Deps.Ktor.contentNegotiation)
     implementation(Deps.Ktor.json)
-    implementation(Deps.Ktor.gson)
     implementation(Deps.Ktor.netty)
     implementation(Deps.Logback.main)
     implementation(project(Deps.Utils.main))
-    implementation(kotlin("stdlib-jdk8"))
 }
 
 
