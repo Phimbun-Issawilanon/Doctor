@@ -62,26 +62,12 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
         request: SubmitRequest,
         output: String
     ): String {
-        val sortedFeedback = assignment.feedback.sortedByDescending { it.attempt }
-        val topLimit = sortedFeedback.firstOrNull {
-            it.attempt < request.attempt
-        } ?: return ""
-        val topLimitIndex = sortedFeedback.indexOf(topLimit)
-        val bottomFeedback = sortedFeedback.filterIndexed { index, _ ->
-            index > topLimitIndex
-        }
-        val validAttemptFeedback = if (bottomFeedback.isNotEmpty()) {
-            val bottomLimit = bottomFeedback.firstOrNull {
-                it.attempt > request.attempt
-            }
-            val bottomLimitIndex = bottomLimit?.let { sortedFeedback.indexOf(bottomLimit) } ?: sortedFeedback.lastIndex
-            sortedFeedback.subList(topLimitIndex, bottomLimitIndex)
-        } else {
-            sortedFeedback
-        }
-        val feedback = validAttemptFeedback.find {
+        val validAttemptFeedback = assignment.feedback.filter {
+            it.attempt <= request.attempt
+        }.sortedByDescending { it.attempt }
+        val feedback = validAttemptFeedback.firstOrNull {
             if (it.regexMatcher.isBlank()) {
-                return@find false
+                return@firstOrNull false
             }
             it.regex.matches(output)
         } ?: validAttemptFeedback.firstOrNull {

@@ -20,7 +20,10 @@ object Deps {
     object Assignment {
         val api by lazy { ":assignment:api" }
         val presenters by lazy { ":assignment:presenters" }
-        val backend by lazy { ":assignment:backend" }
+        object Backend {
+            val main by lazy { ":assignment:backend" }
+            val fakes by lazy { ":assignment:backend:fakes" }
+        }
         val main by lazy { ":assignment" }
     }
 
@@ -77,6 +80,7 @@ object Deps {
         val gson by lazy { "io.ktor:ktor-client-gson:${Versions.ktor}" }
         val netty by lazy { "io.ktor:ktor-server-netty-jvm:${Versions.ktor}" }
         val statusPages by lazy { "io.ktor:ktor-server-status-pages:${Versions.ktor}" }
+        val test by lazy { "io.ktor:ktor-server-test-host:${Versions.ktor}"}
     }
 
     object Sources {
