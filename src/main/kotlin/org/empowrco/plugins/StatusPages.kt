@@ -7,6 +7,7 @@ import io.ktor.server.application.install
 import io.ktor.server.plugins.CannotTransformContentToTypeException
 import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.response.respond
+import org.empowrco.doctor.utils.UnauthorizedException
 import org.empowrco.doctor.utils.UnsupportedLanguage
 import org.jetbrains.exposed.exceptions.ExposedSQLException
 
@@ -20,6 +21,9 @@ fun Application.configureStatusPages() {
         }
         exception<ExposedSQLException> { call, cause ->
             call.respond(HttpStatusCode.BadRequest, ErrorStatus(cause.parseMessage()))
+        }
+        exception<UnauthorizedException> { call, cause ->
+            call.respond(HttpStatusCode.Unauthorized, ErrorStatus(cause.message))
         }
         exception<Throwable> { call, cause ->
             respond(call, cause, HttpStatusCode.InternalServerError)
