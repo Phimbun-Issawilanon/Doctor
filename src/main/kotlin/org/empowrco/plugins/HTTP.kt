@@ -13,7 +13,7 @@ fun Application.configureHTTP() {
             }
         }
     }
-    if (!System.getenv("debug").toBoolean()) {
+    if (!System.getenv("DEBUG").toBoolean()) {
         install(HttpsRedirect) {
             // The port to redirect to. By default, 443, the default HTTPS port.
             sslPort = 443
