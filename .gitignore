@@ -41,4 +41,6 @@ hs_err_pid*.log
 gradle-user-home
 /.idea/
 
-/.run/
+/.run/*
+/AWS.md
+/.run/ApplicationKt.run.xml
