@@ -161,7 +161,7 @@ class AssignmentPresenterTest {
                     CreateAssignmentRequest.Feedback(
                         attempt = it.attempt,
                         feedback = it.feedback,
-                        regexMatcher = it.regexMatcher,
+                        regex = it.regexMatcher,
                     )
                 },
             )

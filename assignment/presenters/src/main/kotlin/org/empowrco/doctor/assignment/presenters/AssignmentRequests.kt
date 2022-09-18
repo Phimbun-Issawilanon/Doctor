@@ -29,6 +29,6 @@ data class CreateAssignmentRequest(
     data class Feedback(
         val attempt: Int,
         val feedback: String,
-        val regexMatcher: String,
+        val regex: String,
     )
 }

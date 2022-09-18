@@ -91,7 +91,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                 Feedback(
                     id = UUID.randomUUID(),
                     feedback = it.feedback,
-                    regexMatcher = it.regexMatcher,
+                    regexMatcher = it.regex,
                     attempt = it.attempt,
                     createdAt = currentTime,
                     lastModifiedAt = currentTime,
