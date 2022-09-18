@@ -30,9 +30,16 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
 
     override suspend fun submit(request: SubmitRequest): SubmitResponse {
         val assignment = repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignment not found")
+        val isFinalAttempt = request.attempt >= assignment.totalAttempts
 
-        if (assignment.totalAttempts > 0 && assignment.totalAttempts < request.attempt) {
-            return SubmitResponse(assignment.failureMessage, "", false)
+        if (assignment.totalAttempts > 0 && isFinalAttempt) {
+            return SubmitResponse(
+                output = assignment.failureMessage,
+                expectedOutput = "",
+                success = false,
+                finalAttempt = isFinalAttempt,
+                feedback = ""
+            )
         }
 
         return when (val codeResult = repo.executeCode(request.language, request.code)) {
@@ -40,18 +47,42 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
             is Error -> {
                 val error = codeResult.message
                 if (assignment.feedback.isEmpty()) {
-                    return SubmitResponse(error, "", false)
+                    return SubmitResponse(
+                        output = error,
+                        expectedOutput = assignment.expectedOutput,
+                        success = false,
+                        finalAttempt = isFinalAttempt,
+                        feedback = ""
+                    )
                 }
                 val feedback = getFeedback(assignment, request, error)
-                SubmitResponse(error, feedback, false)
+                SubmitResponse(
+                    output = error,
+                    expectedOutput = "",
+                    success = false,
+                    finalAttempt = isFinalAttempt,
+                    feedback = feedback,
+                )
             }
 
             is Success -> {
                 if (assignment.expectedOutput == codeResult.output) {
-                    SubmitResponse(codeResult.output, assignment.successMessage, true)
+                    SubmitResponse(
+                        output = codeResult.output,
+                        expectedOutput = assignment.expectedOutput,
+                        success = true,
+                        finalAttempt = isFinalAttempt,
+                        feedback = assignment.successMessage
+                    )
                 } else {
                     val feedback = getFeedback(assignment, request, codeResult.output)
-                    SubmitResponse(codeResult.output, feedback, false)
+                    SubmitResponse(
+                        output = codeResult.output,
+                        expectedOutput = "",
+                        success = false,
+                        finalAttempt = isFinalAttempt,
+                        feedback = feedback
+                    )
                 }
             }
         }
