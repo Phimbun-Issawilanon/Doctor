@@ -5,7 +5,9 @@ project has since taken on a new life to allow all modern languages to be execut
 removing the need for people to have an expensive computer to compile code.
 
 **Disclaimer**: This project is only meant to be a _base_. It does not contain all the necessary security features to
-combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production.
+combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production. One such hardening that should happen is the 
+separation of the assignments access. By keeping them together an intelligent student could write code to potentially access the
+database and view the expected output to all assignments.
 ___
 
 ## Technology
