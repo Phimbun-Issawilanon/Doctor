@@ -49,7 +49,8 @@ suspend inline fun <reified T : Any> PipelineContext<Unit, ApplicationCall>.hand
 fun authenticate(call: ApplicationCall) {
     val bearer = call.request.header("Authorization") ?: throw UnauthorizedException
     val idToken = bearer.substringAfter("Bearer").trim()
-    if (idToken != System.getenv("secret")) {
+    val secret = System.getenv("secret")
+    if (idToken != secret) {
         throw UnauthorizedException
     }
 }
