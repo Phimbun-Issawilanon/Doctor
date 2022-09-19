@@ -20,10 +20,10 @@ fun Application.configureStatusPages() {
             respond(call, cause, HttpStatusCode.BadRequest)
         }
         exception<ExposedSQLException> { call, cause ->
-            call.respond(HttpStatusCode.BadRequest, ErrorStatus(cause.parseMessage()))
+            respond(call, cause, HttpStatusCode.InternalServerError)
         }
         exception<UnauthorizedException> { call, cause ->
-            call.respond(HttpStatusCode.Unauthorized, ErrorStatus(cause.message))
+            respond(call, cause, HttpStatusCode.Unauthorized)
         }
         exception<Throwable> { call, cause ->
             respond(call, cause, HttpStatusCode.InternalServerError)
