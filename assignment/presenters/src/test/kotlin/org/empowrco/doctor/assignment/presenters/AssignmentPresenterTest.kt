@@ -30,11 +30,13 @@ class AssignmentPresenterTest {
 
     @Test
     fun runSuccess(): Unit = runBlocking {
+        repo.assignments.add(assigment)
         repo.executorResponses.add(Success("Hello, World"))
         val response = presenter.run(
             RunRequest(
                 code = "a",
-                language = ""
+                language = "",
+                referenceId = assigment.referenceId
             )
         )
         assertEquals(response.output, "Hello, World")
@@ -43,11 +45,13 @@ class AssignmentPresenterTest {
     @Test
     fun runUnsupportedLanguage(): Unit = runBlocking {
         repo.executorResponses.add(NoValidExecutor("lang"))
+        repo.assignments.add(assigment)
         val exception = assertFailsWith<UnsupportedLanguage> {
             presenter.run(
                 RunRequest(
                     code = "a",
-                    language = ""
+                    language = "",
+                    referenceId = assigment.referenceId
                 )
             )
         }
@@ -57,15 +61,30 @@ class AssignmentPresenterTest {
     @Test
     fun runError(): Unit = runBlocking {
         repo.executorResponses.add(Error("error"))
+        repo.assignments.add(assigment)
         val exception = assertFailsWith<Error> {
             presenter.run(
                 RunRequest(
                     code = "a",
-                    language = ""
+                    language = "",
+                    referenceId = assigment.referenceId,
                 )
             )
         }
         assertEquals(exception.message, "error")
+    }
+
+    @Test
+    fun runAssignmentNotFound(): Unit = runBlocking {
+        assertFailsWith<NotFoundException> {
+            presenter.run(
+                RunRequest(
+                    referenceId = "",
+                    code = "",
+                    language = "",
+                )
+            )
+        }
     }
 
     @Test
@@ -84,7 +103,9 @@ class AssignmentPresenterTest {
             response, SubmitResponse(
                 output = assigment.failureMessage,
                 feedback = "",
-                success = false
+                success = false,
+                expectedOutput = assigment.expectedOutput,
+                finalAttempt = true,
             )
         )
     }
