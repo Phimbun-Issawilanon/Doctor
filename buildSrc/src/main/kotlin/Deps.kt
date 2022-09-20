@@ -1,13 +1,13 @@
 object Deps {
 
-    object Project {
-        val executor by lazy { ":executor" }
-        val assignment by lazy { ":assignment" }
+    object Command {
+        val main by lazy { ":command" }
+        val fakes by lazy { ":command:fakes" }
+    }
 
-        object Command {
-            val main by lazy { ":command" }
-            val fakes by lazy { ":command:fakes" }
-        }
+    object Executor {
+        val main by lazy { ":executor" }
+        val fakes by lazy { ":executor:fakes" }
     }
 
     object Download {
@@ -20,10 +20,12 @@ object Deps {
     object Assignment {
         val api by lazy { ":assignment:api" }
         val presenters by lazy { ":assignment:presenters" }
+
         object Backend {
             val main by lazy { ":assignment:backend" }
             val fakes by lazy { ":assignment:backend:fakes" }
         }
+
         val main by lazy { ":assignment" }
     }
 
@@ -80,12 +82,12 @@ object Deps {
         val gson by lazy { "io.ktor:ktor-client-gson:${Versions.ktor}" }
         val netty by lazy { "io.ktor:ktor-server-netty-jvm:${Versions.ktor}" }
         val statusPages by lazy { "io.ktor:ktor-server-status-pages:${Versions.ktor}" }
-        val test by lazy { "io.ktor:ktor-server-test-host:${Versions.ktor}"}
+        val test by lazy { "io.ktor:ktor-server-test-host:${Versions.ktor}" }
     }
 
     object Sources {
         val main by lazy { ":sources" }
-        val fakes by lazy { ":sources:fakes"}
+        val fakes by lazy { ":sources:fakes" }
     }
 
     object Logback {

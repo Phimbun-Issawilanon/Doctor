@@ -29,3 +29,5 @@ include("assignment:backend:fakes")
 findProject(":assignment:backend:fakes")?.name = "fakes"
 include("sources:fakes")
 findProject(":sources:fakes")?.name = "fakes"
+include("executor:fakes")
+findProject(":executor:fakes")?.name = "fakes"
