@@ -3,7 +3,10 @@ package org.empowrco.doctor.assignment.presenters
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RunResponse(val output: String)
+data class RunResponse(
+    val output: String,
+    val expectedOutput: String,
+)
 
 @Serializable
 data class SubmitResponse(

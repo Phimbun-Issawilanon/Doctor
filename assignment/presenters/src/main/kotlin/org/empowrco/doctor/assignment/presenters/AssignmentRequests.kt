@@ -3,7 +3,11 @@ package org.empowrco.doctor.assignment.presenters
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RunRequest(val language: String, val code: String)
+data class RunRequest(
+    val referenceId: String,
+    val language: String,
+    val code: String,
+)
 
 @Serializable
 data class SubmitRequest(
