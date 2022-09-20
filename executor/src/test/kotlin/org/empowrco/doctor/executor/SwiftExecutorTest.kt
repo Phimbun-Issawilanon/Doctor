@@ -1,20 +1,21 @@
 package org.empowrco.doctor.executor
 
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.equality.shouldBeEqualToComparingFields
+import kotlinx.coroutines.runBlocking
 import org.empowrco.doctor.command.CommandResponse
 import org.empowrco.doctor.command.fakes.FakeCommander
+import org.empowrco.doctor.models.Success
+import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
-class SwiftExecutorTest: FunSpec() {
-    init {
-        val commander = FakeCommander()
-        val executor = SwiftExecutor(commander = commander)
+class SwiftExecutorTest {
+    private val commander = FakeCommander()
+    private val executor = SwiftExecutor(commander = commander)
 
-        test("success") {
-            val code = "print(\"Hello, World\")"
-            commander.responses.add(CommandResponse.Success("Hello, World"))
-            val response = executor.execute(code)
-            response shouldBeEqualToComparingFields ExecutorResponse("Hello, World")
-        }
+    @Test
+    fun success() = runBlocking {
+        val code = "print(\"Hello, World\")"
+        commander.responses.add(CommandResponse.Success("Hello, World"))
+        val response = executor.execute(code)
+        assertEquals(response, Success("Hello, World"))
     }
 }

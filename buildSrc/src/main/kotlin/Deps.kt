@@ -62,11 +62,6 @@ object Deps {
         val logger by lazy { "io.insert-koin:koin-logger-slf4j:${Versions.koin}" }
     }
 
-    object Kotest {
-        val junit by lazy { "io.kotest:kotest-runner-junit5:${Versions.kotest}" }
-        val assertions by lazy { "io.kotest:kotest-assertions-core:${Versions.kotest}" }
-    }
-
     object Kotlin {
         val coroutines by lazy { "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2" }
         val dateTime by lazy { "org.jetbrains.kotlinx:kotlinx-datetime:0.4.0" }
