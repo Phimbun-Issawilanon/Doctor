@@ -27,3 +27,5 @@ include("download:presenters")
 findProject(":download:presenters")?.name = "presenters"
 include("assignment:backend:fakes")
 findProject(":assignment:backend:fakes")?.name = "fakes"
+include("sources:fakes")
+findProject(":sources:fakes")?.name = "fakes"

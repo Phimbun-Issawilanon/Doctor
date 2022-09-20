@@ -85,6 +85,7 @@ object Deps {
 
     object Sources {
         val main by lazy { ":sources" }
+        val fakes by lazy { ":sources:fakes"}
     }
 
     object Logback {
