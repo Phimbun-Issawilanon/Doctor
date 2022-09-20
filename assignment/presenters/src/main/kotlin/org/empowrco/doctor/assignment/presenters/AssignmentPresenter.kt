@@ -21,12 +21,11 @@ interface AssignmentPresenter {
 
 internal class RealAssignmentPresenter(private val repo: AssignmentRepository) : AssignmentPresenter {
     override suspend fun run(request: RunRequest): RunResponse {
+        val assignment = repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignment not found")
         when (val result = repo.executeCode(request.language, request.code)) {
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
             is Error -> throw result
             is Success -> {
-                val assignment =
-                    repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignemtn not found")
                 return RunResponse(
                     output = result.output,
                     expectedOutput = assignment.expectedOutput,
@@ -42,7 +41,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
         if (assignment.totalAttempts > 0 && isFinalAttempt) {
             return SubmitResponse(
                 output = assignment.failureMessage,
-                expectedOutput = "",
+                expectedOutput = assignment.expectedOutput,
                 success = false,
                 finalAttempt = isFinalAttempt,
                 feedback = ""
@@ -65,7 +64,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                 val feedback = getFeedback(assignment, request, error)
                 SubmitResponse(
                     output = error,
-                    expectedOutput = "",
+                    expectedOutput = assignment.expectedOutput,
                     success = false,
                     finalAttempt = isFinalAttempt,
                     feedback = feedback,
@@ -85,7 +84,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                     val feedback = getFeedback(assignment, request, codeResult.output)
                     SubmitResponse(
                         output = codeResult.output,
-                        expectedOutput = "",
+                        expectedOutput = assignment.expectedOutput,
                         success = false,
                         finalAttempt = isFinalAttempt,
                         feedback = feedback
