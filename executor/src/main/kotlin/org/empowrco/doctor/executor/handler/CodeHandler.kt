@@ -1,4 +1,4 @@
-package org.empowrco.doctor.handler
+package org.empowrco.doctor.executor.handler
 
 import org.empowrco.doctor.executor.Executor
 import org.empowrco.doctor.models.ExecutorResponse

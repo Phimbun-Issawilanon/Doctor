@@ -1,6 +1,6 @@
 package org.empowrco.doctor.assignment.backend
 
-import org.empowrco.doctor.handler.CodeHandler
+import org.empowrco.doctor.executor.handler.CodeHandler
 import org.empowrco.doctor.models.Assignment
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.sources.AssignmentSource

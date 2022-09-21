@@ -1,4 +1,4 @@
-package org.empowrco.doctor.handler
+package org.empowrco.doctor.executor.handler
 
 import org.koin.dsl.module
 
