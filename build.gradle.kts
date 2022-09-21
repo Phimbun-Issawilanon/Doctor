@@ -4,7 +4,7 @@ plugins {
     application
     kotlin("jvm") version Versions.kotlin
     id("org.jetbrains.kotlin.plugin.serialization") version Versions.kotlin
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.ktor.plugin") version Versions.ktor
 }
 
 group = ConfigData.baseGroup

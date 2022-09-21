@@ -19,7 +19,6 @@ RUN tar -xzf swift-5.6.2-RELEASE-ubuntu20.04.tar.gz
 ENV PATH="swift-5.6.2-RELEASE-ubuntu20.04/usr/bin:${PATH}"
 
 
-
 # Install Kotlin
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 RUN apt-get -qq -y install curl unzip zip
@@ -39,7 +38,7 @@ RUN swift --version
 FROM gradle:7-jdk11 AS build
 COPY  . /src
 WORKDIR /src
-RUN gradle shadowJar --no-daemon
+RUN gradle buildFatJar --no-daemon
 
 FROM openjdk:11
 EXPOSE 8080:8080
