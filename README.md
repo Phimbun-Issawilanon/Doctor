@@ -57,6 +57,7 @@ Here is a list of the executors and the language(s) they support.
 | PythonExecutor     | Python        |
 | TypescriptExecutor | Typescript    |
 | JavascriptExecutor | Javascript    |
+| RustExecutor       | Rust          |
 
 
 ### Playground
