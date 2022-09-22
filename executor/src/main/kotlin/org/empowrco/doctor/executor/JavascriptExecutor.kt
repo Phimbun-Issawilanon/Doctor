@@ -6,10 +6,9 @@ import org.empowrco.doctor.command.Commander
 import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.models.Success
-import java.io.File
-import java.io.FileWriter
+import org.empowrco.doctor.utils.FileUtil
 
-internal class JavascriptExecutor(private val commander: Commander) : Executor() {
+internal class JavascriptExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages: Set<String>
         get() = setOf(
             "javascript",
@@ -23,9 +22,7 @@ internal class JavascriptExecutor(private val commander: Commander) : Executor()
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                val tempFile = File.createTempFile("js-exc", ".js")
-                val fileWriter = FileWriter(tempFile)
-                fileWriter.use {
+                val tempFile = fileUtil.writeToFile("js-exc", ".js") {
                     it.appendLine(code)
                 }
                 val result = commander.execute("node ${tempFile.absolutePath}")
