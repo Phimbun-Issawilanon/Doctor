@@ -21,14 +21,16 @@ interface AssignmentPresenter {
 
 internal class RealAssignmentPresenter(private val repo: AssignmentRepository) : AssignmentPresenter {
     override suspend fun run(request: RunRequest): RunResponse {
-        val assignment = repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignment not found")
         when (val result = repo.executeCode(request.language, request.code)) {
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
             is Error -> throw result
             is Success -> {
+                val expectedOutput = request.referenceId?.let {
+                    (repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignment not found")).expectedOutput
+                } ?: ""
                 return RunResponse(
                     output = result.output,
-                    expectedOutput = assignment.expectedOutput,
+                    expectedOutput = expectedOutput,
                 )
             }
         }
