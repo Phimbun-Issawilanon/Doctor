@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class RealCommanderTest {
 
-    val commander = RealCommander()
+    private val commander = RealCommander()
 
     @Test
     fun execute() = runBlocking {
