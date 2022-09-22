@@ -6,19 +6,16 @@ import org.empowrco.doctor.command.Commander
 import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.models.Success
-import java.io.File
-import java.io.FileWriter
+import org.empowrco.doctor.utils.FileUtil
 
-internal class PythonExecutor(private val commander: Commander) : Executor() {
+internal class PythonExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages: Set<String>
         get() = setOf("python", "text/x-python")
 
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
             return@withContext try {
-                val tempFile = File.createTempFile("python-exc", ".py")
-                val fileWriter = FileWriter(tempFile)
-                fileWriter.use {
+                val tempFile = fileUtil.writeToFile("python-exc", ".py") {
                     it.appendLine(code)
                 }
                 val result = commander.execute("python3 ${tempFile.absolutePath}")
