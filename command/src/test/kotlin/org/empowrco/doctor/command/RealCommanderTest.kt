@@ -1,25 +1,23 @@
 package org.empowrco.doctor.command
 
-import io.kotest.common.ExperimentalKotest
-import io.kotest.core.spec.style.FunSpec
-import io.kotest.matchers.equality.shouldBeEqualToComparingFields
+import kotlinx.coroutines.runBlocking
+import kotlin.test.Test
+import kotlin.test.assertEquals
 
 
-@OptIn(ExperimentalKotest::class)
-class RealCommanderTest : FunSpec() {
+class RealCommanderTest {
 
-    init {
-        val commander = RealCommander()
-        testCoroutineDispatcher = true
+    val commander = RealCommander()
 
-        test("test successful command returns CommandResponse.Success") {
-            val response = commander.execute("echo Hello, World")
-            response shouldBeEqualToComparingFields CommandResponse.Success("Hello, World")
-        }
+    @Test
+    fun execute() = runBlocking {
+        val response = commander.execute("echo Hello, World")
+        assertEquals(response, CommandResponse.Success("Hello, World"))
+    }
 
-        test("test invalid command returns CommandResponse.Error") {
-            val response = commander.execute("ec ho Hello, World")
-            response shouldBeEqualToComparingFields CommandResponse.Error("Cannot run program \"ec\": error=2, No such file or directory")
-        }
+    @Test
+    fun testInvalidCommand() = runBlocking {
+        val response = commander.execute("ec ho Hello, World")
+        assertEquals(response, CommandResponse.Error("Cannot run program \"ec\": error=2, No such file or directory"))
     }
 }
