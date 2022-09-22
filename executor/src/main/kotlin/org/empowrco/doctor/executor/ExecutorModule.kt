@@ -9,4 +9,5 @@ val executorModule = module {
     single { JavascriptExecutor(get(), get()) } bind Executor::class
     single { TypescriptExecutor(get(), get()) } bind Executor::class
     single { PythonExecutor(get(), get()) } bind Executor::class
+    single { RustExecutor(get(), get()) } bind Executor::class
 }
