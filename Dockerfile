@@ -36,6 +36,13 @@ RUN npm install npm@latest -g && \
     n latest \
 RUN npm install -g typescript
 
+# Install Rust
+RUN mkdir -p /user/turreta-rust-builder/src
+WORKDIR /user/turreta-rust-builder/src
+
+RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
 
 # Testing
 RUN kotlin --version
