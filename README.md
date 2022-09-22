@@ -50,11 +50,13 @@ We currently support a Swift implementation and look to support Kotlin and Pytho
 
 Here is a list of the executors and the language(s) they support.
 
-| Files           | Languages     |
-|-----------------|---------------|
-| SwiftExecutor   | Apple's Swift |
-| Kotlin Executor | Kotlin        |
-| PythonExecutor  | Python        |
+| Files              | Languages     |
+|--------------------|---------------|
+| SwiftExecutor      | Apple's Swift |
+| Kotlin Executor    | Kotlin        |
+| PythonExecutor     | Python        |
+| TypescriptExecutor | Typescript    |
+| JavascriptExecutor | Javascript    |
 
 
 ### Playground
