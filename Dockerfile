@@ -27,12 +27,22 @@ RUN curl -s "https://get.sdkman.io" | bash
 RUN source "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN sdk install kotlin
 
+# Install Node & typescript
+RUN apt-get update && apt-get install -y \
+    software-properties-common \
+    npm
+RUN npm install npm@latest -g && \
+    npm install n -g && \
+    n latest \
+RUN npm install -g typescript
+
 
 # Testing
 RUN kotlin --version
 RUN python --version
 RUN java --version
 RUN swift --version
+RUN node --version
 
 # Running the Ktor application
 FROM gradle:7-jdk11 AS build
