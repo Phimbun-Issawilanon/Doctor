@@ -8,6 +8,7 @@ import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.models.Success
 import org.empowrco.doctor.utils.FileUtil
+import java.io.File
 
 internal class RustExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages = setOf("rust", "text/x-rustsrc")
@@ -24,13 +25,14 @@ internal class RustExecutor(private val commander: Commander, private val fileUt
                         it.appendLine("}")
                     }
                 }
-                val commandResponse = commander.execute("rustc ${tempFile.absolutePath}")
+                val commandResponse = commander.execute("rustc ${tempFile}")
                 if (commandResponse is CommandResponse.Error) {
                     return@withContext Error(commandResponse.output)
                 }
-                val filename = tempFile.absolutePath.removeSuffix(".rs")
-                val executeResult = commander.execute(".${filename}")
+                val filename = tempFile.path.removeSuffix(".rs")
+                val executeResult = commander.execute("./${filename}")
                 tempFile.deleteRecursively()
+                File(filename).deleteRecursively()
                 Success(executeResult.output)
             } catch (ex: Exception) {
                 Error(ex.message ?: "")

@@ -12,7 +12,7 @@ object RealFileUtil : FileUtil {
         val projectDir = System.getProperty("user.dir")
         val projectFile = File(projectDir)
         val tempFile = File.createTempFile(prefix, suffix, projectFile)
-        return tempFile
+        return tempFile.relativeToOrSelf(projectFile)
     }
 
     override fun writeToFile(prefix: String, suffix: String, writer: (FileWriter) -> Unit): File {
