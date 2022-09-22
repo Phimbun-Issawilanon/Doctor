@@ -8,4 +8,5 @@ val executorModule = module {
     single { KotlinExecutor(get()) } bind Executor::class
     single { JavascriptExecutor(get()) } bind Executor::class
     single { TypescriptExecutor(get()) } bind Executor::class
+    single { PythonExecutor(get()) } bind Executor::class
 }
