@@ -2,6 +2,7 @@ package org.empowrco.doctor.executor
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.empowrco.doctor.command.CommandResponse
 import org.empowrco.doctor.command.Commander
 import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
@@ -23,10 +24,12 @@ internal class KotlinExecutor(private val commander: Commander, private val file
                         it.appendLine("}")
                     }
                 }
-                val jarName = "${tempFile.nameWithoutExtension}.jar"
+                val jarName = tempFile.absolutePath.removeSuffix(".kt") + ".jar"
                 val command = "kotlinc ${tempFile.absolutePath} -include-runtime -d $jarName"
                 val commandResponse = commander.execute(command)
-                println(commandResponse)
+                if (commandResponse is CommandResponse.Error) {
+                    return@withContext Error(commandResponse.output)
+                }
                 val executeResult = commander.execute("java -jar $jarName")
                 tempFile.deleteRecursively()
                 Success(executeResult.output)
