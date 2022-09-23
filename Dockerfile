@@ -1,13 +1,10 @@
-FROM ubuntu:20.04
-
-
 # Running the Ktor application
 FROM gradle:7-jdk11 AS build
 COPY  . /src
 WORKDIR /src
 RUN gradle buildFatJar --no-daemon
 
-FROM openjdk:11
+FROM ubuntu:20.04
 EXPOSE 8080:8080
 RUN mkdir /app
 COPY --from=build /src/build/libs/Doctor*.jar /app/doctor.jar
@@ -23,13 +20,12 @@ RUN apt-get install -y openjdk-11-jdk
 
 
 # Install Swift 5.7
-#RUN apt-get update -y  \
-#    && apt-get install -y wget binutils git gnupg2 libc6-dev libcurl4 libedit2 libgcc-9-dev libpython2.7 libsqlite3-0 libstdc++-9-dev libxml2 libz3-dev pkg-config tzdata zlib1g-dev  \
-#    && wget https://download.swift.org/swift-5.7-release/ubuntu2204-aarch64/swift-5.7-RELEASE/swift-5.7-RELEASE-ubuntu22.04-aarch64.tar.gz  \
-#    && mkdir /usr/share/swift \
-#    && tar -xvzf swift-5.7-RELEASE-ubuntu22.04-aarch64.tar.gz -C /usr/share/swift
-#ENV PATH=/usr/share/swift/swift-5.7-RELEASE-ubuntu22.04-aarch64/usr/bin:$PATH
-
+RUN apt update -y && apt upgrade -y \
+    && apt install curl ca-certificates gnupg -y \
+    && curl -fsSL https://archive.swiftlang.xyz/swiftlang_repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/swiftlang_repo.gpg.key \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/swiftlang_repo.gpg.key] https://archive.swiftlang.xyz/ubuntu focal main" | tee /etc/apt/sources.list.d/swiftlang.list > /dev/null \
+    && apt update -y \
+    && apt install swiftlang -y
 
 # Install Kotlin
 RUN apt update && apt upgrade -y
@@ -67,6 +63,7 @@ RUN kotlinc -version
 RUN python3 --version
 RUN java --version
 RUN node --version
+RUN swift --version
 RUN cargo --help
 
 ENTRYPOINT ["java","-jar","/app/doctor.jar"]
