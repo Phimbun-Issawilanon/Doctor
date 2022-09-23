@@ -46,7 +46,6 @@ The purpose of this module is for executing code.
 #### Executor
 
 The executor interface is meant to be generic enough that any language could have its own implementation.
-We currently support a Swift implementation and look to support Kotlin and Python in the future.
 
 Here is a list of the executors and the language(s) they support.
 
@@ -70,10 +69,6 @@ A list of supported downloadable executables.
 
 This module contains an api `/download` that if hit, will package up the code sent to it, and return a fully working swift playground.
 
-### Routing-Utils
-This module contains helper methods for authentication. Authentication is very simple by just checking if a Secret key 
-passed in the header matches what's stored on the database. Feel free to change this module for your authentication needs.
-
 ### buildSrc
 This is a module used solely for dependency management.
 
@@ -87,7 +82,8 @@ docker build . --platform <platform> -t empowrco/doctor:<tag_name>
 ```
 Where:
 
-- `<platform>` is the target platform that the image will run on, usually `linux/x86_64` or `linux/amd64` if running on
+- `<platform>` is the target platform that the image will run on, usually `linux/x86_64` or `linux/arm64/v8` if running
+  on
   an M1 Mac.
 - `<tag_name>` is a unique string tag.
 
