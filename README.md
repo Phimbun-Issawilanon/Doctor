@@ -93,12 +93,12 @@ Where:
 
 Example:
 ```console
-docker build . --platform linux/arm64 -t empowrco/doctor:latest
+docker build . --platform linux/arm64/v8 -t empowrco/doctor:latest
 ```
 
 To run the built docker image as a container locally, do:
 ```console
-docker run --platform linux/armd4 -p 8080:8080 empowrco/doctor:latest
+docker run --platform linux/arm64/v8 -p 8080:8080 empowrco/doctor:latest
 ```
 
 This command includes a port-forward argument that will forward your machine's 8080 to 8080 on the container.
