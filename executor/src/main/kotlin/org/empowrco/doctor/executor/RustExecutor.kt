@@ -16,7 +16,7 @@ internal class RustExecutor(private val commander: Commander, private val fileUt
         return withContext(Dispatchers.IO) {
             return@withContext try {
                 val addMainFunction = !code.contains(Regex("fn main\\([a-zA-Z: <>]*\\)"))
-                val tempFile = fileUtil.writeToFile("rust-ex", ".rs") {
+                val tempFile = fileUtil.writeToFile("rust-ex", ".rs", true) {
                     if (addMainFunction) {
                         it.appendLine("fn main() {")
                     }
@@ -29,8 +29,8 @@ internal class RustExecutor(private val commander: Commander, private val fileUt
                 if (commandResponse is CommandResponse.Error) {
                     return@withContext Error(commandResponse.output)
                 }
-                val filename = tempFile.path.removeSuffix(".rs")
-                val executeResult = commander.execute("./${filename}")
+                val filename = tempFile.nameWithoutExtension
+                val executeResult = commander.execute("./${tempFile.nameWithoutExtension}")
                 tempFile.deleteRecursively()
                 File(filename).deleteRecursively()
                 Success(executeResult.output)
