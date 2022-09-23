@@ -36,15 +36,15 @@ class RealCommander : Commander {
     }
 
     private fun getOutput(inputStream: InputStream): String {
-        var result = ""
+        var result = StringBuilder("")
         val scanner = Scanner(inputStream, loggingCharset)
         scanner.use {
             while (scanner.hasNextLine()) {
                 synchronized(this) {
-                    result += scanner.nextLine()
+                    result.appendLine(scanner.nextLine())
                 }
             }
         }
-        return result
+        return result.toString().trim()
     }
 }
