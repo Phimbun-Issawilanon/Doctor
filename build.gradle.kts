@@ -55,6 +55,7 @@ dependencies {
     implementation(project(Deps.Db.main))
     implementation(project(Deps.Utils.routing))
     implementation(Deps.Koin.main)
+    implementation(Deps.Ktor.callLogging)
     implementation(Deps.Ktor.core)
     implementation(Deps.Ktor.headers)
     implementation(Deps.Ktor.redirect)
