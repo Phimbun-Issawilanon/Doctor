@@ -71,7 +71,6 @@ object Deps {
         val core by lazy { "io.ktor:ktor-server-core-jvm:${Versions.ktor}" }
         val auth by lazy { "io.ktor:ktor-server-auth-jvm:${Versions.ktor}" }
         val headers by lazy { "io.ktor:ktor-server-caching-headers-jvm:${Versions.ktor}" }
-        val redirect by lazy { "io.ktor:ktor-server-http-redirect-jvm:${Versions.ktor}" }
         val contentNegotiation by lazy { "io.ktor:ktor-server-content-negotiation-jvm:${Versions.ktor}" }
         val json by lazy { "io.ktor:ktor-serialization-kotlinx-json-jvm:${Versions.ktor}" }
         val gson by lazy { "io.ktor:ktor-client-gson:${Versions.ktor}" }
