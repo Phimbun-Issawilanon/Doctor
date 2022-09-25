@@ -57,7 +57,6 @@ dependencies {
     implementation(Deps.Koin.main)
     implementation(Deps.Ktor.core)
     implementation(Deps.Ktor.headers)
-    implementation(Deps.Ktor.redirect)
     implementation(Deps.Exposed.core)
     implementation(Deps.Ktor.statusPages)
     implementation(Deps.Ktor.contentNegotiation)
