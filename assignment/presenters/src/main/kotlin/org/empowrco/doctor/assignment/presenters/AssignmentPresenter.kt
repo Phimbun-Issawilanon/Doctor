@@ -25,9 +25,12 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
             is Error -> throw result
             is Success -> {
-                val expectedOutput = request.referenceId?.let {
-                    (repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignment not found")).expectedOutput
-                } ?: ""
+                val referenceId = request.referenceId
+                val expectedOutput = if (referenceId.isNullOrBlank()) {
+                    ""
+                } else {
+                    repo.getAssignment(referenceId)?.expectedOutput ?: throw NotFoundException("Assignment not found")
+                }
                 return RunResponse(
                     output = result.output,
                     expectedOutput = expectedOutput,
