@@ -77,6 +77,7 @@ object Deps {
         val netty by lazy { "io.ktor:ktor-server-netty-jvm:${Versions.ktor}" }
         val statusPages by lazy { "io.ktor:ktor-server-status-pages:${Versions.ktor}" }
         val test by lazy { "io.ktor:ktor-server-test-host:${Versions.ktor}" }
+        val callLogging  by lazy { "io.ktor:ktor-server-call-logging:${Versions.ktor}"}
     }
 
     object Sources {
