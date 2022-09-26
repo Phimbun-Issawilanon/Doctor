@@ -10,6 +10,7 @@ import org.empowrco.doctor.models.Feedback
 import org.empowrco.doctor.models.NoValidExecutor
 import org.empowrco.doctor.models.Success
 import org.empowrco.doctor.utils.UnsupportedLanguage
+import org.empowrco.doctor.utils.diff.fakes.FakeDiffUtil
 import org.empowrco.doctor.utils.now
 import java.util.UUID
 import kotlin.test.AfterTest
@@ -20,7 +21,8 @@ import kotlin.test.assertIs
 
 class AssignmentPresenterTest {
     private val repo = FakeAssignmentRepo()
-    private val presenter = RealAssignmentPresenter(repo)
+    private val diffUtil = FakeDiffUtil()
+    private val presenter = RealAssignmentPresenter(repo, diffUtil)
 
     @AfterTest
     fun teardown() {
@@ -30,8 +32,10 @@ class AssignmentPresenterTest {
 
     @Test
     fun runSuccess(): Unit = runBlocking {
+        val output = "Hello, World"
         repo.assignments.add(assigment)
-        repo.executorResponses.add(Success("Hello, World"))
+        repo.executorResponses.add(Success(output))
+        diffUtil.diffHtmls.put(Pair(output, assigment.expectedOutput), "diff")
         val response = presenter.run(
             RunRequest(
                 code = "a",
@@ -39,7 +43,13 @@ class AssignmentPresenterTest {
                 referenceId = assigment.referenceId
             )
         )
-        assertEquals(response.output, "Hello, World")
+        assertEquals(
+            response, RunResponse(
+                expectedOutput = assigment.expectedOutput,
+                output = "Hello, World",
+                diff = "diff"
+            )
+        )
     }
 
     @Test
@@ -76,10 +86,12 @@ class AssignmentPresenterTest {
 
     @Test
     fun runAssignmentNotFound(): Unit = runBlocking {
+        repo.assignments.add(assigment.copy(referenceId = "b"))
+        repo.executorResponses.add(Success("code"))
         assertFailsWith<NotFoundException> {
             presenter.run(
                 RunRequest(
-                    referenceId = "",
+                    referenceId = "a",
                     code = "",
                     language = "",
                 )
@@ -98,6 +110,7 @@ class AssignmentPresenterTest {
     fun submitTooManyAttempts() = runBlocking {
         repo.assignments.add(assigment)
         val request = submitRequest.copy(attempt = assigment.totalAttempts + 1)
+
         val response = presenter.submit(request)
         assertEquals(
             response, SubmitResponse(
@@ -106,6 +119,7 @@ class AssignmentPresenterTest {
                 success = false,
                 expectedOutput = assigment.expectedOutput,
                 finalAttempt = true,
+                diff = null,
             )
         )
     }
@@ -136,11 +150,16 @@ class AssignmentPresenterTest {
         repo.assignments.add(assigment)
         repo.executorResponses.add(Error("failure"))
         val response = presenter.submit(submitRequest.copy(attempt = 2))
-        with(response) {
-            assertEquals(output, "failure")
-            assertEquals(feedback, "feedback3")
-            assertEquals(success, false)
-        }
+        assertEquals(
+            response, SubmitResponse(
+                output = "failure",
+                feedback = "feedback3",
+                success = false,
+                expectedOutput = assigment.expectedOutput,
+                finalAttempt = false,
+                diff = null,
+            )
+        )
     }
 
     @Test
@@ -148,11 +167,16 @@ class AssignmentPresenterTest {
         repo.assignments.add(assigment)
         repo.executorResponses.add(Success("code"))
         val response = presenter.submit(submitRequest.copy(attempt = 1))
-        with(response) {
-            assertEquals(output, "code")
-            assertEquals(feedback, "feedback1")
-            assertEquals(success, false)
-        }
+        assertEquals(
+            response, SubmitResponse(
+                output = "code",
+                feedback = "feedback1",
+                success = false,
+                expectedOutput = assigment.expectedOutput,
+                finalAttempt = false,
+                diff = null,
+            )
+        )
     }
 
     @Test
@@ -165,6 +189,16 @@ class AssignmentPresenterTest {
             assertEquals(feedback, assigment.successMessage)
             assertEquals(success, true)
         }
+        assertEquals(
+            response, SubmitResponse(
+                output = assigment.expectedOutput,
+                feedback = assigment.successMessage,
+                success = true,
+                expectedOutput = assigment.expectedOutput,
+                finalAttempt = false,
+                diff = null,
+            )
+        )
     }
 
     @Test

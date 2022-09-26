@@ -35,3 +35,5 @@ include("utils:diff")
 findProject(":utils:diff")?.name = "diff"
 include("utils:files")
 findProject(":utils:files")?.name = "files"
+include("utils:diff:fakes")
+findProject(":utils:diff:fakes")?.name = "fakes"
