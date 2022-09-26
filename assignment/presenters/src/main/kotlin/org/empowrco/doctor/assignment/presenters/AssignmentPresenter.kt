@@ -10,6 +10,7 @@ import org.empowrco.doctor.models.NoValidExecutor
 import org.empowrco.doctor.models.Success
 import org.empowrco.doctor.utils.UnknownException
 import org.empowrco.doctor.utils.UnsupportedLanguage
+import org.empowrco.doctor.utils.diff.DiffUtil
 import org.empowrco.doctor.utils.now
 import java.util.UUID
 
@@ -19,7 +20,10 @@ interface AssignmentPresenter {
     suspend fun create(request: CreateAssignmentRequest): CreateAssignmentResponse
 }
 
-internal class RealAssignmentPresenter(private val repo: AssignmentRepository) : AssignmentPresenter {
+internal class RealAssignmentPresenter(
+    private val repo: AssignmentRepository,
+    private val diffUtil: DiffUtil,
+) : AssignmentPresenter {
     override suspend fun run(request: RunRequest): RunResponse {
         when (val result = repo.executeCode(request.language, request.code)) {
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
@@ -34,6 +38,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                 return RunResponse(
                     output = result.output,
                     expectedOutput = expectedOutput,
+                    diff = diffUtil.generateDiffHtml(result.output, expectedOutput)
                 )
             }
         }
@@ -49,7 +54,8 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                 expectedOutput = assignment.expectedOutput,
                 success = false,
                 finalAttempt = isFinalAttempt,
-                feedback = ""
+                feedback = "",
+                diff = null,
             )
         }
 
@@ -63,7 +69,8 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                         expectedOutput = assignment.expectedOutput,
                         success = false,
                         finalAttempt = isFinalAttempt,
-                        feedback = ""
+                        feedback = "",
+                        diff = null,
                     )
                 }
                 val feedback = getFeedback(assignment, request, error)
@@ -73,6 +80,7 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                     success = false,
                     finalAttempt = isFinalAttempt,
                     feedback = feedback,
+                    diff = null,
                 )
             }
 
@@ -83,7 +91,8 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                         expectedOutput = assignment.expectedOutput,
                         success = true,
                         finalAttempt = isFinalAttempt,
-                        feedback = assignment.successMessage
+                        feedback = assignment.successMessage,
+                        diff = diffUtil.generateDiffHtml(codeResult.output, assignment.expectedOutput),
                     )
                 } else {
                     val feedback = getFeedback(assignment, request, codeResult.output)
@@ -92,7 +101,8 @@ internal class RealAssignmentPresenter(private val repo: AssignmentRepository) :
                         expectedOutput = assignment.expectedOutput,
                         success = false,
                         finalAttempt = isFinalAttempt,
-                        feedback = feedback
+                        feedback = feedback,
+                        diff = diffUtil.generateDiffHtml(codeResult.output, assignment.expectedOutput),
                     )
                 }
             }
