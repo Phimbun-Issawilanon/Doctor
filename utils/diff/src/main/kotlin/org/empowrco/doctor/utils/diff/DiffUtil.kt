@@ -61,10 +61,12 @@ class RealDiffUtil(private val fileUtil: FileUtil, private val commander: Comman
         }
         val minifyResult =
             commander.execute("html-minifier ${htmlFile.absolutePath} --collapse-whitespace --remove-comments --minify-css true --minify-js true")
+        diff.outputFile.deleteRecursively()
+        diff.expectedOutputFile.deleteRecursively()
+        htmlFile.deleteRecursively()
         if (minifyResult is CommandResponse.Error) {
             return null
         }
-        println(minifyResult)
         return minifyResult.output
     }
 }
