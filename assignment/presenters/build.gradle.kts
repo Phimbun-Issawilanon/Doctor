@@ -9,6 +9,7 @@ dependencies {
     implementation(Deps.Kotlin.dateTime)
     implementation(Deps.Ktor.json)
     implementation(project(Deps.Assignment.Backend.main))
+    implementation(project(Deps.Utils.diff))
     implementation(project(Deps.Utils.main))
     testImplementation(project(Deps.Assignment.Backend.fakes))
 }

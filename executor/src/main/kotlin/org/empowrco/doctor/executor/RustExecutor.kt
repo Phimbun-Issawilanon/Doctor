@@ -7,7 +7,7 @@ import org.empowrco.doctor.command.Commander
 import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.models.Success
-import org.empowrco.doctor.utils.FileUtil
+import org.empowrco.doctor.utils.files.FileUtil
 import java.io.File
 
 internal class RustExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {

@@ -1,8 +1,6 @@
 package org.empowrco.doctor.utils
 
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import org.empowrco.doctor.utils.diff.diffUtilsModule
+import org.empowrco.doctor.utils.files.fileUtilsModule
 
-val utilsModule = module {
-    singleOf<FileUtil> { RealFileUtil }
-}
+val utilsModule = listOf(diffUtilsModule, fileUtilsModule)

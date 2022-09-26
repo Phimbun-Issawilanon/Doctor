@@ -1,6 +1,5 @@
 dependencies {
-    implementation(Deps.Kotlin.dateTime)
     implementation(Deps.Koin.main)
-    implementation(project(Deps.Utils.diff))
     implementation(project(Deps.Utils.files))
+    implementation(project(Deps.Command.main))
 }
