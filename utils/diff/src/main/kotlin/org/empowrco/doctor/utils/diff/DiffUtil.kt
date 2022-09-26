@@ -7,14 +7,13 @@ import java.io.File
 
 interface DiffUtil {
     suspend fun generateDiffHtml(output: String, expectedOutput: String): String?
-    suspend fun generateDiff(output: String, expectedOutput: String): DiffResult?
 }
 
 data class DiffResult(val outputFile: File, val expectedOutputFile: File, val diff: String)
 
 class RealDiffUtil(private val fileUtil: FileUtil, private val commander: Commander) : DiffUtil {
 
-    override suspend fun generateDiff(output: String, expectedOutput: String): DiffResult? {
+    private suspend fun generateDiff(output: String, expectedOutput: String): DiffResult? {
 
         val outputFile = fileUtil.writeToFile("output", ".txt") {
             it.appendLine(output)

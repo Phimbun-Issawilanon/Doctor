@@ -33,7 +33,10 @@ object Deps {
         val routing by lazy { ":utils:routing" }
         val main by lazy { ":utils" }
         val files by lazy { ":utils:files" }
-        val diff by lazy { ":utils:diff" }
+        object Diff {
+            val main by lazy {":utils:diff"}
+            val fakes by lazy {":utils:diff:fakes"}
+        }
     }
 
     object Exposed {

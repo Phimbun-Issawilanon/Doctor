@@ -6,6 +6,7 @@ import kotlinx.serialization.Serializable
 data class RunResponse(
     val output: String,
     val expectedOutput: String,
+    val diff: String?,
 )
 
 @Serializable
@@ -15,6 +16,7 @@ data class SubmitResponse(
     val feedback: String,
     val success: Boolean,
     val finalAttempt: Boolean,
+    val diff: String?,
 )
 
 @Serializable
