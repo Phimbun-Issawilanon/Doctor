@@ -1,4 +1,4 @@
-package org.empowrco.doctor.utils
+package org.empowrco.doctor.utils.files
 
 import java.io.File
 import java.io.FileWriter

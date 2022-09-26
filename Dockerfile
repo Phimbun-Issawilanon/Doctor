@@ -50,6 +50,11 @@ RUN set -e; \
     rm -rf /var/lib/apt/lists  \
     && npm install -g typescript
 
+# Install git && diff2html && html minifier
+RUN apt-get -y install git \
+    && npm install -g diff2html-cli \
+    && npm install html-minifier -g
+
 # Install Rust
 RUN apt-get update \
     && apt-get -qq -y install curl unzip zip  \

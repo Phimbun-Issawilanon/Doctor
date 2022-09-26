@@ -9,5 +9,5 @@ dependencies {
     testImplementation(project(Deps.Command.fakes))
     implementation(Deps.Kotlin.coroutines)
     implementation(Deps.Koin.main)
-    implementation(project(Deps.Utils.main))
+    implementation(project(Deps.Utils.files))
 }

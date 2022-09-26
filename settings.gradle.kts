@@ -31,3 +31,7 @@ include("sources:fakes")
 findProject(":sources:fakes")?.name = "fakes"
 include("executor:fakes")
 findProject(":executor:fakes")?.name = "fakes"
+include("utils:diff")
+findProject(":utils:diff")?.name = "diff"
+include("utils:files")
+findProject(":utils:files")?.name = "files"
