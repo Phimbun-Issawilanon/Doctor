@@ -40,6 +40,9 @@ class RealDiffUtil(private val fileUtil: FileUtil, private val commander: Comman
         val result =
             commander.execute("diff2html --fct false -s side --su hidden -o stdout -i file -- ${diffFile.absolutePath}")
         if (result is CommandResponse.Error) {
+            diff.outputFile.deleteRecursively()
+            diff.expectedOutputFile.deleteRecursively()
+            diffFile.deleteRecursively()
             return null
         }
         var html = result.output.replace(diff.outputFile.name, "Your Code Output")
@@ -62,6 +65,7 @@ class RealDiffUtil(private val fileUtil: FileUtil, private val commander: Comman
         diff.outputFile.deleteRecursively()
         diff.expectedOutputFile.deleteRecursively()
         htmlFile.deleteRecursively()
+        diffFile.deleteRecursively()
         if (minifyResult is CommandResponse.Error) {
             return null
         }
