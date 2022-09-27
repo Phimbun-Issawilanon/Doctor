@@ -48,12 +48,12 @@ internal class RealAssignmentPresenter(
         val assignment = repo.getAssignment(request.referenceId) ?: throw NotFoundException("Assignment not found")
         val isFinalAttempt = request.attempt >= assignment.totalAttempts
 
-        if (assignment.totalAttempts > 0 && isFinalAttempt) {
+        if (assignment.totalAttempts > 0 && request.attempt > assignment.totalAttempts) {
             return SubmitResponse(
                 output = assignment.failureMessage,
                 expectedOutput = assignment.expectedOutput,
                 success = false,
-                finalAttempt = isFinalAttempt,
+                finalAttempt = true,
                 feedback = "",
                 diff = null,
             )
@@ -92,7 +92,7 @@ internal class RealAssignmentPresenter(
                         success = true,
                         finalAttempt = isFinalAttempt,
                         feedback = assignment.successMessage,
-                        diff = diffUtil.generateDiffHtml(codeResult.output, assignment.expectedOutput),
+                        diff = null,
                     )
                 } else {
                     val feedback = getFeedback(assignment, request, codeResult.output)
