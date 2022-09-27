@@ -20,7 +20,6 @@ class RealDiffUtil(private val fileUtil: FileUtil, private val commander: Comman
         }
         val expectedOutputFile = fileUtil.writeToFile("expectedOutput", ".txt") {
             it.appendLine(expectedOutput)
-            it.appendLine("Hola")
         }
 
         val result =
