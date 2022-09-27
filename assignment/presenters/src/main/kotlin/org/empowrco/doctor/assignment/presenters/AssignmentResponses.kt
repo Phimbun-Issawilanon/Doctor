@@ -7,6 +7,7 @@ data class RunResponse(
     val output: String,
     val expectedOutput: String,
     val diff: String?,
+    val success: Boolean,
 )
 
 @Serializable
