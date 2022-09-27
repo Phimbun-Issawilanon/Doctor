@@ -29,16 +29,18 @@ internal class RealAssignmentPresenter(
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
             is Error -> throw result
             is Success -> {
-                val referenceId = request.referenceId
-                val expectedOutput = if (referenceId.isNullOrBlank()) {
-                    ""
+                val shouldFetchAssignment = !request.referenceId.isNullOrBlank()
+                val expectedOutput = if (shouldFetchAssignment) {
+                    repo.getAssignment(request.referenceId!!)?.expectedOutput
+                        ?: throw NotFoundException("Assignment not found")
                 } else {
-                    repo.getAssignment(referenceId)?.expectedOutput ?: throw NotFoundException("Assignment not found")
+                    ""
                 }
                 return RunResponse(
                     output = result.output,
                     expectedOutput = expectedOutput,
-                    diff = diffUtil.generateDiffHtml(result.output, expectedOutput)
+                    success = !shouldFetchAssignment || (expectedOutput == result.output),
+                    diff = if (shouldFetchAssignment) diffUtil.generateDiffHtml(result.output, expectedOutput) else null
                 )
             }
         }

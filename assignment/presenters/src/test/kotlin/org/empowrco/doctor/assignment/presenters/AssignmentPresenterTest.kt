@@ -47,7 +47,8 @@ class AssignmentPresenterTest {
             response, RunResponse(
                 expectedOutput = assigment.expectedOutput,
                 output = "Hello, World",
-                diff = "diff"
+                diff = "diff",
+                success = true,
             )
         )
     }
