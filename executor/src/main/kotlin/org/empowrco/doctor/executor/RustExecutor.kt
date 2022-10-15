@@ -33,7 +33,7 @@ internal class RustExecutor(private val commander: Commander, private val fileUt
                 val executeResult = commander.execute("./${tempFile.nameWithoutExtension}")
                 tempFile.deleteRecursively()
                 File(filename).deleteRecursively()
-                Success(executeResult.output)
+                Success(executeResult.output, executeResult is CommandResponse.Error)
             } catch (ex: Exception) {
                 Error(ex.message ?: "")
             }

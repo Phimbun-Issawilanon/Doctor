@@ -5,15 +5,12 @@ project has since taken on a new life to allow all modern languages to be execut
 removing the need for people to have an expensive computer to compile code.
 
 **Disclaimer**: This project is only meant to be a _base_. It does not contain all the necessary security features to
-combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production. One such hardening that should happen is the 
-separation of the assignments access. By keeping them together an intelligent student could write code to potentially access the
-database and view the expected output to all assignments.
+combat arbitrary code execution. Please **_fork and harden_** the code before you use it in production.
 ___
 
 ## Technology
 
-We use Ktor as it's a fast and easy to learn framework for server creation. Exposed is used to make working with the
-database easier and offer a layer of protection. This project is meant to run inside
+We use Ktor as it's a fast and easy to learn framework for server creation. This project is meant to run inside
 a Docker instance to prevent any malicious code from hurting your server instance.
 ___
 

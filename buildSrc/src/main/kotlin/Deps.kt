@@ -17,33 +17,22 @@ object Deps {
         val api by lazy { ":download:api" }
     }
 
-    object Assignment {
-        val api by lazy { ":assignment:api" }
-        val presenters by lazy { ":assignment:presenters" }
+    object Run {
+        val api by lazy { ":run:api" }
+        val presenters by lazy { ":run:presenters" }
 
         object Backend {
-            val main by lazy { ":assignment:backend" }
-            val fakes by lazy { ":assignment:backend:fakes" }
+            val main by lazy { ":run:backend" }
+            val fakes by lazy { ":run:backend:fakes" }
         }
 
-        val main by lazy { ":assignment" }
+        val main by lazy { ":run" }
     }
 
     object Utils {
         val routing by lazy { ":utils:routing" }
         val main by lazy { ":utils" }
         val files by lazy { ":utils:files" }
-        object Diff {
-            val main by lazy {":utils:diff"}
-            val fakes by lazy {":utils:diff:fakes"}
-        }
-    }
-
-    object Exposed {
-        val core by lazy { "org.jetbrains.exposed:exposed-core:${Versions.exposed}" }
-        val jdbc by lazy { "org.jetbrains.exposed:exposed-jdbc:${Versions.exposed}" }
-        val dateTime by lazy { "org.jetbrains.exposed:exposed-kotlin-datetime:${Versions.exposed}" }
-        val javaDateTime by lazy { "org.jetbrains.exposed:exposed-java-time:${Versions.exposed}" }
     }
 
     object Hikari {
@@ -56,10 +45,6 @@ object Deps {
 
     object Models {
         val main by lazy { ":models" }
-    }
-
-    object Db {
-        val main by lazy { ":db" }
     }
 
     object Koin {
