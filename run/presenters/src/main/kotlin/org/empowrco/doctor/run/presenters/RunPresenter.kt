@@ -20,7 +20,6 @@ internal class RealRunPresenter(
             is Success -> {
                 return RunResponse(
                     output = result.output,
-                    expectedOutput = "",
                     success = !result.isStacktraceError,
                 )
             }
