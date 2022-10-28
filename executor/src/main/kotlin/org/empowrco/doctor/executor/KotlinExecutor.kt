@@ -32,7 +32,7 @@ internal class KotlinExecutor(private val commander: Commander, private val file
                 }
                 val executeResult = commander.execute("java -jar $jarName")
                 tempFile.deleteRecursively()
-                Success(executeResult.output)
+                Success(executeResult.output, executeResult is CommandResponse.Error)
             } catch (ex: Exception) {
                 Error(ex.message ?: "")
             }

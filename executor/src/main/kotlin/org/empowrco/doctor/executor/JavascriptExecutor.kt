@@ -2,6 +2,7 @@ package org.empowrco.doctor.executor
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.empowrco.doctor.command.CommandResponse
 import org.empowrco.doctor.command.Commander
 import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
@@ -27,7 +28,7 @@ internal class JavascriptExecutor(private val commander: Commander, private val 
                 }
                 val result = commander.execute("node ${tempFile.absolutePath}")
                 tempFile.deleteRecursively()
-                Success(result.output)
+                Success(result.output, result is CommandResponse.Error)
             } catch (ex: Exception) {
                 Error(ex.message ?: "")
             }

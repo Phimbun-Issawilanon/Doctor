@@ -26,7 +26,7 @@ internal class TypescriptExecutor(private val commander: Commander, private val 
                 val jsFilePath = tempFile.absolutePath.removeSuffix(".ts") + ".js"
                 val result = commander.execute("node $jsFilePath")
                 tempFile.deleteRecursively()
-                Success(result.output)
+                Success(result.output, result is CommandResponse.Error)
             } catch (ex: Exception) {
                 Error(ex.message ?: "")
             }
