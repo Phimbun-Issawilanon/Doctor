@@ -32,3 +32,10 @@ include("executor:fakes")
 findProject(":executor:fakes")?.name = "fakes"
 include("utils:files")
 findProject(":utils:files")?.name = "files"
+include("tester")
+include("tester:backend")
+findProject(":tester:backend")?.name = "backend"
+include("tester:presenters")
+findProject(":tester:presenters")?.name = "presenters"
+include("tester:api")
+findProject(":tester:api")?.name = "api"

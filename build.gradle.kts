@@ -49,6 +49,8 @@ dependencies {
     implementation(project(Deps.Download.api))
     implementation(project(Deps.Run.main))
     implementation(project(Deps.Run.api))
+    implementation(project(Deps.Tester.main))
+    implementation(project(Deps.Tester.api))
     implementation(project(Deps.Executor.main))
     implementation(project(Deps.Sources.main))
     implementation(project(Deps.Command.main))

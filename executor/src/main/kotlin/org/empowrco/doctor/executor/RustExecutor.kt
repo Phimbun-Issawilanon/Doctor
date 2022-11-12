@@ -12,6 +12,9 @@ import java.io.File
 
 internal class RustExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages = setOf("rust", "text/x-rustsrc")
+    override val canTest: Boolean
+        get() = false
+
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
             return@withContext try {
@@ -38,5 +41,9 @@ internal class RustExecutor(private val commander: Commander, private val fileUt
                 Error(ex.message ?: "")
             }
         }
+    }
+
+    override suspend fun test(code: String, unitTests: String): ExecutorResponse {
+        TODO("Not yet implemented")
     }
 }

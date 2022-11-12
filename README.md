@@ -46,14 +46,14 @@ The executor interface is meant to be generic enough that any language could hav
 
 Here is a list of the executors and the language(s) they support.
 
-| Files              | Languages     |
-|--------------------|---------------|
-| SwiftExecutor      | Apple's Swift |
-| Kotlin Executor    | Kotlin        |
-| PythonExecutor     | Python        |
-| TypescriptExecutor | Typescript    |
-| JavascriptExecutor | Javascript    |
-| RustExecutor       | Rust          |
+| Files              | Languages     | Supports Unit Tests |
+|--------------------|---------------|---------------------|
+| SwiftExecutor      | Apple's Swift | ✅                   |
+| Kotlin Executor    | Kotlin        |                     |
+| PythonExecutor     | Python        |                     |
+| TypescriptExecutor | Typescript    |                     |
+| JavascriptExecutor | Javascript    |                     |
+| RustExecutor       | Rust          |                     |
 
 
 ### Playground

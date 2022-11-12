@@ -19,6 +19,8 @@ internal class JavascriptExecutor(private val commander: Commander, private val 
             "text/ecmascript",
             "application/ecmascript",
         )
+    override val canTest: Boolean
+        get() = false
 
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
@@ -33,5 +35,9 @@ internal class JavascriptExecutor(private val commander: Commander, private val 
                 Error(ex.message ?: "")
             }
         }
+    }
+
+    override suspend fun test(code: String, unitTests: String): ExecutorResponse {
+        TODO("Not yet implemented")
     }
 }

@@ -29,6 +29,18 @@ object Deps {
         val main by lazy { ":run" }
     }
 
+    object Tester {
+        val api by lazy { ":tester:api" }
+        val presenters by lazy { ":tester:presenters" }
+
+        object Backend {
+            val main by lazy { ":tester:backend" }
+            val fakes by lazy { ":tester:backend:fakes" }
+        }
+
+        val main by lazy { ":tester" }
+    }
+
     object Utils {
         val routing by lazy { ":utils:routing" }
         val main by lazy { ":utils" }
