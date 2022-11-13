@@ -10,10 +10,6 @@ import org.empowrco.doctor.models.Success
 import org.empowrco.doctor.models.TestError
 import org.empowrco.doctor.models.TestSuccess
 import org.empowrco.doctor.utils.files.FileUtil
-import java.io.File
-import java.nio.file.Files
-import kotlin.io.path.Path
-import kotlin.io.path.relativeToOrSelf
 
 internal class SwiftExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages = setOf("swift", "text/x-swift")
@@ -36,8 +32,7 @@ internal class SwiftExecutor(private val commander: Commander, private val fileU
 
     override suspend fun test(code: String, unitTests: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
-            val tempPath = Path(System.getProperty("user.dir"))
-            val tempFolder = Files.createTempDirectory(tempPath, "Test").relativeToOrSelf(tempPath).toFile()
+            val tempFolder = fileUtil.createTempDirectory()
             return@withContext try {
                 val createTestResult = commander.execute("swift package init --type library", tempFolder)
                 if (createTestResult is CommandResponse.Error) {
@@ -57,11 +52,7 @@ internal class SwiftExecutor(private val commander: Commander, private val fileU
             } catch (ex: Exception) {
                 Error(ex.message ?: "")
             } finally {
-                Files.walk(tempFolder.toPath())
-                    .sorted(Comparator.reverseOrder())
-                    .map(java.nio.file.Path::toFile)
-                    .forEach(File::delete)
-
+                fileUtil.deleteFiles(tempFolder)
             }
         }
     }
