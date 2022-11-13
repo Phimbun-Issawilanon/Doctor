@@ -21,12 +21,13 @@ internal class RealTesterPresenter(
             is Error -> throw result
             TestSuccess -> {
                 ExecuteTestsResponse(
-                    result = "All tests passed",
+                    output = "All tests passed",
+                    success = true
                 )
             }
 
             is TestError -> {
-                ExecuteTestsResponse(result.failures.first())
+                ExecuteTestsResponse(result.failures.first(), false)
             }
 
             else -> throw UnknownException

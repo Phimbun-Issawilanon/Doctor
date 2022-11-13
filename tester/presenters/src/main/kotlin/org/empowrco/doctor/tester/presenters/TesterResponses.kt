@@ -1,5 +1,9 @@
 package org.empowrco.doctor.tester.presenters
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ExecuteTestsResponse(
-    val result: String,
+    val output: String,
+    val success: Boolean,
 )
