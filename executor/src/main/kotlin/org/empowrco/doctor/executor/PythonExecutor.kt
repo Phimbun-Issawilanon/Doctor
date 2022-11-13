@@ -12,6 +12,8 @@ import org.empowrco.doctor.utils.files.FileUtil
 internal class PythonExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages: Set<String>
         get() = setOf("python", "text/x-python")
+    override val canTest: Boolean
+        get() = false
 
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
@@ -26,5 +28,9 @@ internal class PythonExecutor(private val commander: Commander, private val file
                 Error(ex.message ?: "")
             }
         }
+    }
+
+    override suspend fun test(code: String, unitTests: String): ExecutorResponse {
+        TODO("Not yet implemented")
     }
 }

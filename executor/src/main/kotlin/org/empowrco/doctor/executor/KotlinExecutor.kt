@@ -11,6 +11,9 @@ import org.empowrco.doctor.utils.files.FileUtil
 
 internal class KotlinExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages = setOf("kotlin", "text/x-kotlin")
+    override val canTest: Boolean
+        get() = false
+
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
             return@withContext try {
@@ -37,5 +40,9 @@ internal class KotlinExecutor(private val commander: Commander, private val file
                 Error(ex.message ?: "")
             }
         }
+    }
+
+    override suspend fun test(code: String, unitTests: String): ExecutorResponse {
+        TODO("Not yet implemented")
     }
 }

@@ -4,6 +4,7 @@ import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.NoValidExecutor
 import org.empowrco.doctor.models.Success
 import org.empowrco.doctor.run.backend.RunRepository
+import org.empowrco.doctor.utils.UnknownException
 import org.empowrco.doctor.utils.UnsupportedLanguage
 
 interface RunPresenter {
@@ -23,6 +24,8 @@ internal class RealRunPresenter(
                     success = !result.isStacktraceError,
                 )
             }
+
+            else -> throw UnknownException
         }
     }
 }
