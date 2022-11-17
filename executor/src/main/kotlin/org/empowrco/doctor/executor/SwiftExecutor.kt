@@ -7,8 +7,6 @@ import org.empowrco.doctor.command.Commander
 import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.models.Success
-import org.empowrco.doctor.models.TestError
-import org.empowrco.doctor.models.TestSuccess
 import org.empowrco.doctor.utils.files.FileUtil
 
 internal class SwiftExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
@@ -39,15 +37,10 @@ internal class SwiftExecutor(private val commander: Commander, private val fileU
                     return@withContext Error(createTestResult.output)
                 }
                 val executeTestResult = commander.execute("swift test", tempFolder)
-                val matches = "(?<=XCTAssertEqual failed:).*\\n".toRegex().findAll(executeTestResult.output).toList()
-                return@withContext if (executeTestResult is CommandResponse.Error) {
-                    return@withContext Error(executeTestResult.output)
-                } else if (matches.isNotEmpty()) {
-                    TestError(matches.map {
-                        it.value
-                    })
+                if (executeTestResult is CommandResponse.Success) {
+                    return@withContext Success(executeTestResult.output, false)
                 } else {
-                    TestSuccess
+                    return@withContext Error(executeTestResult.output)
                 }
             } catch (ex: Exception) {
                 Error(ex.message ?: "")
