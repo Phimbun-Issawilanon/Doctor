@@ -30,7 +30,8 @@ RUN apt update -y && apt upgrade -y \
 # Install Kotlin
 RUN apt update && apt upgrade -y
 RUN apt install nginx curl zip unzip -y
-RUN curl -s "https://get.sdkman.io" | bash
+RUN curl -s https://get.sdkman.io | bash
+RUN chmod a+x "$HOME/.sdkman/bin/sdkman-init.sh"
 RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh; sdk version; sdk install kotlin"
 ENV PATH=/root/.sdkman/candidates/kotlin/current/bin:$PATH
 
@@ -55,8 +56,6 @@ RUN set -e; \
 RUN apt-get update \
     && apt-get -qq -y install curl unzip zip  \
     && curl https://sh.rustup.rs -sSf | sh -s -- -y
-
-# Add .cargo/bin to PATH
 ENV PATH="/root/.cargo/bin:${PATH}"
 RUN echo 'source $HOME/.cargo/env' >> $HOME/.bashrc
 
