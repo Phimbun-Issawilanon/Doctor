@@ -9,5 +9,3 @@ data class Untestable(private val language: String) :
 data class Success(val output: String, val isStacktraceError: Boolean) : ExecutorResponse
 
 sealed interface TestResponse : ExecutorResponse
-object TestSuccess : TestResponse
-data class TestError(val failures: List<String>) : TestResponse
