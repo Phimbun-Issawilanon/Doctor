@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ExecuteTestRequest(
     val language: String,
-    val tests: String,
+    val unitTests: String,
     val code: String,
 )
