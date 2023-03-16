@@ -13,8 +13,8 @@ fun Application.testerApi() {
     val presenter: TesterPresenter by inject()
     routing {
         get("test") {
-            val result = presenter.test(call.receive())
-            call.respond(result)
+            val response = presenter.test(call.receive())
+            call.respond(response)
         }
     }
 }
