@@ -1,5 +1,6 @@
 package org.empowrco.doctor.executor
 
+import io.ktor.utils.io.core.use
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.empowrco.doctor.command.CommandResponse
@@ -8,6 +9,8 @@ import org.empowrco.doctor.models.Error
 import org.empowrco.doctor.models.ExecutorResponse
 import org.empowrco.doctor.models.Success
 import org.empowrco.doctor.utils.files.FileUtil
+import java.io.File
+import java.io.FileWriter
 
 internal class SwiftExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages = setOf("swift", "text/x-swift")
@@ -32,7 +35,30 @@ internal class SwiftExecutor(private val commander: Commander, private val fileU
         return withContext(Dispatchers.IO) {
             val tempFolder = fileUtil.createTempDirectory()
             return@withContext try {
-                val createTestResult = commander.execute("swift package init --type library", tempFolder)
+                val nameRegex = "class\\s(.*):?\\sXCTestCase".toRegex()
+                val testName =
+                    nameRegex.find(unitTests)?.groupValues?.lastOrNull()?.removeSuffix(":")?.removeSuffix("Tests")
+                        ?: return@withContext Error("Unit tests did not include a valid class extending XCTestCase")
+                val createTestResult =
+                    commander.execute("swift package init --type library --name $testName", tempFolder)
+                val sourcesFolder = File(tempFolder, "/Sources/$testName")
+                val sourceFile = sourcesFolder.listFiles()?.firstOrNull() ?: return@withContext Error(
+                    "Error finding " +
+                            "source file for Test $testName"
+                )
+                FileWriter(sourceFile).use {
+                    it.write("")
+                    it.appendLine("import Foundation")
+                    it.appendLine(code)
+                }
+                val testsFolder = File(tempFolder, "/Tests/${testName}Tests")
+                val testsFile = testsFolder.listFiles()?.firstOrNull() ?: return@withContext Error(
+                    "Error finding " +
+                            "test file for Test $testName"
+                )
+                FileWriter(testsFile).use {
+                    it.write(unitTests)
+                }
                 if (createTestResult is CommandResponse.Error) {
                     return@withContext Error(createTestResult.output)
                 }
