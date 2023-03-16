@@ -9,7 +9,7 @@ import io.ktor.server.routing.routing
 import org.empowrco.doctor.tester.presenters.TesterPresenter
 import org.koin.ktor.ext.inject
 
-fun Application.testerRouting() {
+fun Application.testerApi() {
     val presenter: TesterPresenter by inject()
     routing {
         get("test") {

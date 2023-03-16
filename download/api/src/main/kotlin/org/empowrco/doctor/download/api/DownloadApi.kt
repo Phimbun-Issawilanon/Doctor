@@ -8,7 +8,7 @@ import org.empowrco.doctor.download.presenters.DownloadRequest
 import org.empowrco.doctor.utils.routing.authPost
 import org.koin.ktor.ext.inject
 
-fun Application.playgroundRouting() {
+fun Application.downloadApi() {
     routing {
         val viewModel: DownloadPresenter by inject()
         authPost("/download") {

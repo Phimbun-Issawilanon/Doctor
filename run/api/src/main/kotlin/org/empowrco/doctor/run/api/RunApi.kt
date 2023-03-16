@@ -7,7 +7,7 @@ import org.empowrco.doctor.run.presenters.RunPresenter
 import org.empowrco.doctor.utils.routing.authPost
 import org.koin.ktor.ext.inject
 
-fun Application.runRouting() {
+fun Application.runApi() {
     val presenter: RunPresenter by inject()
     routing {
         authPost("/run") {
