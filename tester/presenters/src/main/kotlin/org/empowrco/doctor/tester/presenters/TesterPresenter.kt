@@ -19,7 +19,8 @@ internal class RealTesterPresenter(
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
             is Error -> {
                 ExecuteTestsResponse(
-                    output = result.message
+                    output = result.message,
+                    success = false,
                 )
             }
 
