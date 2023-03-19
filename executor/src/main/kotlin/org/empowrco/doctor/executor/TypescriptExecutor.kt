@@ -12,8 +12,6 @@ import org.empowrco.doctor.utils.files.FileUtil
 internal class TypescriptExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages: Set<String>
         get() = setOf("typescript", "text/typescript", "application/typescript")
-    override val canTest: Boolean
-        get() = false
 
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {

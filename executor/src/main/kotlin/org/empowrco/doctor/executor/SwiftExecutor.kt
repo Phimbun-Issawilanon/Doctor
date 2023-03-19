@@ -14,7 +14,6 @@ import java.io.FileWriter
 
 internal class SwiftExecutor(private val commander: Commander, private val fileUtil: FileUtil) : Executor() {
     override val handledLanguages = setOf("swift", "text/x-swift")
-    override val canTest: Boolean = true
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
             return@withContext try {

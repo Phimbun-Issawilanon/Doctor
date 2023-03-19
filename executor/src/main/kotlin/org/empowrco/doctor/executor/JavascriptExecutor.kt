@@ -19,8 +19,6 @@ internal class JavascriptExecutor(private val commander: Commander, private val 
             "text/ecmascript",
             "application/ecmascript",
         )
-    override val canTest: Boolean
-        get() = false
 
     override suspend fun execute(code: String): ExecutorResponse {
         return withContext(Dispatchers.IO) {
