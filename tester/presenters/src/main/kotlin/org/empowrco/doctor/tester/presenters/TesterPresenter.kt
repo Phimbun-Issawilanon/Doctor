@@ -17,7 +17,12 @@ internal class RealTesterPresenter(
     override suspend fun test(request: ExecuteTestRequest): ExecuteTestsResponse {
         return when (val result = repo.test(request.language, request.code, request.unitTests)) {
             is NoValidExecutor -> throw UnsupportedLanguage(result.message)
-            is Error -> throw result
+            is Error -> {
+                ExecuteTestsResponse(
+                    output = result.message
+                )
+            }
+
             is Success -> {
                 ExecuteTestsResponse(
                     output = result.output,
