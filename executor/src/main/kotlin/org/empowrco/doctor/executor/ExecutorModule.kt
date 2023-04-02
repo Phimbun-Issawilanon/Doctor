@@ -10,4 +10,5 @@ val executorModule = module {
     single { TypescriptExecutor(get(), get()) } bind Executor::class
     single { PythonExecutor(get(), get()) } bind Executor::class
     single { RustExecutor(get(), get()) } bind Executor::class
+    single { CSharpExecutor(get(), get()) } bind Executor::class
 }
