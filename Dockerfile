@@ -36,20 +36,8 @@ RUN /bin/bash -c "source /root/.sdkman/bin/sdkman-init.sh; sdk version; sdk inst
 ENV PATH=/root/.sdkman/candidates/kotlin/current/bin:$PATH
 
 # Install Node & typescript
-RUN set -e; \
-    apt-get update -y && \
-    apt-get install -qqy --no-install-recommends \
-    curl wget nano gnupg2 software-properties-common && \
-    rm -rf /var/lib/apt/lists;
-
-RUN curl -sL https://deb.nodesource.com/setup_16.x | bash -
-
-RUN set -e; \
-    apt-get update && \
-    apt-get install -qqy \
-    nodejs && \
-    rm -rf /var/lib/apt/lists  \
-    && npm install -g typescript
+RUN apt update && \
+    apt install nodejs npm -y
 
 
 # Install Rust
