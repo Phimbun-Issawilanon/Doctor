@@ -4,7 +4,7 @@ COPY  . /src
 WORKDIR /src
 RUN gradle buildFatJar --no-daemon
 
-FROM ubuntu:20.04
+FROM ubuntu:22.10
 EXPOSE 8080:8080
 RUN mkdir /app
 COPY --from=build /src/build/libs/Doctor*.jar /app/doctor.jar
