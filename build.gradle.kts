@@ -67,6 +67,9 @@ dependencies {
     implementation(project(Deps.Utils.main))
 }
 
+tasks {
+    create("stage").dependsOn("installDist")
+}
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
