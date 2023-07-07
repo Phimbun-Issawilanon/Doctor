@@ -19,6 +19,14 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get install -y openjdk-11-jdk
 
 
+# Install Swift 5.7
+RUN apt update -y && apt upgrade -y \
+    && apt install curl ca-certificates gnupg -y \
+    && curl -fsSL https://archive.swiftlang.xyz/swiftlang_repo.gpg.key | gpg --dearmor -o /usr/share/keyrings/swiftlang_repo.gpg.key \
+    && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/swiftlang_repo.gpg.key] https://archive.swiftlang.xyz/ubuntu focal main" | tee /etc/apt/sources.list.d/swiftlang.list > /dev/null \
+    && apt update -y \
+    && apt install swiftlang -y
+
 # Install Kotlin
 RUN apt update && apt upgrade -y
 RUN apt install nginx curl zip unzip -y
@@ -54,6 +62,7 @@ RUN kotlinc -version
 RUN python3 --version
 RUN java --version
 RUN node --version
+RUN swift --version
 RUN cargo --help
 RUN dotnet --info
 RUN mono --version
